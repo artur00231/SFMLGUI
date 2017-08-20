@@ -14,6 +14,8 @@
 #include "Number_input.h"
 #include "Event.h"
 #include "Styles.h"
+#include "managing_gui_object.h"
+#include "Vertical_layout.h"
 
 #include <unordered_map>
 #include <chrono>
@@ -31,8 +33,8 @@ namespace gui
 		Gui(Gui&&) = default;
 		Gui& operator=(Gui&&) = default;
 
-		gui_object * add(gui::gui_object * object, const std::string & name = {}) override;
-		gui_object * add(gui::gui_object & object, const std::string & name = {}) override;
+		gui_object * addObject(gui::gui_object * object, const std::string & name = {}) override;
+		gui_object * addObject(gui::gui_object & object, const std::string & name = {}) override;
 
 		template<typename T>
 		T* add(T* object, const std::string & name = {});
@@ -62,8 +64,8 @@ namespace gui
 		void checkRadio_buttons(std::vector<gui::Radio_button*> & radio_buttons);
 		std::string getUniqeName();
 
-		gui_object * addToGui(gui::gui_object * object, const std::string & name = {});
-		gui_object * addToGui(gui::gui_object & object, const std::string & name = {});
+		gui_object * addToGui(gui::gui_object * object, const std::string & name);
+		gui_object * addToGui(gui::gui_object & object, const std::string & name);
 
 	private:
 		std::unordered_map<std::string, std::pair<gui::gui_object*, bool>> _gui_objects;

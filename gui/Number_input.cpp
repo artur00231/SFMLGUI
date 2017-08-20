@@ -93,8 +93,8 @@ void gui::Number_input::draw(sf::RenderTarget & render_target) const
 
 void gui::Number_input::setOwner(gui::owner & owner)
 {
-	owner.add(_up);
-	owner.add(_down);
+	owner.addObject(_up);
+	owner.addObject(_down);
 
 	auto owner_text_style = owner.getTextStyle();
 	_label.setTextStyle(owner_text_style);
@@ -462,7 +462,10 @@ void gui::Number_input::resize()
 		float button_size_x = (_size.x - 2 * _frame.getThickness()) * _proportions_text_button;
 		float button_size_y = (_size.y - 2 * _frame.getThickness()) / 2;
 
-		unsigned int button_character_size = std::floor(button_size_y * 0.8f);
+		// button_character_size_base = std::min({button_size_x, button_size_y});
+		float button_character_size_base = button_size_x < button_size_y ? button_size_x : button_size_y;
+
+		unsigned int button_character_size = std::floor(button_character_size_base * 0.8f);
 
 		_up.getLabel().setCharacterSize(button_character_size);
 		_down.getLabel().setCharacterSize(button_character_size);

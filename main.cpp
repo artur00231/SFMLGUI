@@ -27,29 +27,26 @@ int main()
 
 	gui::Text_style s{ "fonts\\arial.ttf", 20, sf::Color::Black };
 
-	gui::Gui main_layout(s);
+	gui::Gui gui(s);
 
-	gui::Text_input * text_input = main_layout.add(new gui::Text_input{ "" }, "nazawa");
-	text_input->setPosition({ 20, 50 });
-	text_input->setSize({ 200, 50 });
-	text_input->getLabel().setAlign(gui::Align::LEFT);
-	text_input->getFrame().setColor(sf::Color::Red);
-	text_input->getFrame().setThickness(3);
+	gui::Vertical_layout * layout = gui.add(new gui::Vertical_layout{ gui });
 
-	text_input = main_layout.add(new gui::Text_input{ "haha" }, "nazawa2");
-	text_input->setPosition({ 20, 120 });
-	text_input->setSize({ 200, 50 });
-	text_input->getLabel().setAlign(gui::Align::LEFT);
-	text_input->getFrame().setColor(sf::Color::Red);
-	text_input->getFrame().setThickness(3);
+	layout->setPosition({ 20, 20 });
+	layout->setSize({ 150, 500 });
 
-	gui::Number_input * number_input = main_layout.add(new gui::Number_input{ "2584" }, "nazawa3");
-	number_input->setPosition({ 20, 200 });
-	number_input->setSize({ 200, 50 });
-	number_input->getLabel().setAlign(gui::Align::LEFT);
-	number_input->getFrame().setColor(sf::Color::Red);
-	number_input->getFrame().setThickness(3);
+	auto checkbox = layout->add(new gui::Checkbox{ "1" });
+	checkbox->getFrame().setColor(sf::Color::Red);
+	checkbox->getFrame().setThickness(2);
 
+	checkbox = layout->add(new gui::Checkbox{ "2" });
+
+	checkbox->getFrame().setColor(sf::Color::Red);
+	checkbox->getFrame().setThickness(2);
+
+	auto a =layout->add(new gui::Number_input{});
+
+	a->getFrame().setColor(sf::Color::Red);
+	a->getFrame().setThickness(2);
 
 	while (window.isOpen())
 	{
@@ -65,14 +62,14 @@ int main()
 			}
 
 
-			main_layout.addEvent(event);
+			gui.addEvent(event);
 
 		}
 
 
 
 		window.clear(sf::Color::Color(200, 200, 200));
-		main_layout.drawAndUp_date(window);
+		gui.drawAndUp_date(window);
 		window.display();
 		
 	}
