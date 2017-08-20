@@ -1,8 +1,15 @@
 #include "Vertical_layout.h"
 
-gui::Vertical_layout::Vertical_layout(const Text_style & text_style, gui::owner & owner) : _owner{&owner}
+gui::Vertical_layout::Vertical_layout(owner & owner, const Text_style * text_style)
 {
-	_default_text_style = text_style;
+	if (text_style)
+	{
+		_default_text_style = *text_style;
+	}
+	else
+	{
+		_default_text_style = owner.getTextStyle();
+	}
 }
 
 void gui::Vertical_layout::setSize(const sf::Vector2f & size)
@@ -43,50 +50,14 @@ void gui::Vertical_layout::draw(sf::RenderTarget & window) const
 	}
 }
 
-gui::gui_object * gui::Vertical_layout::add(gui::gui_object * object, const std::string & name)
+gui::gui_object * gui::Vertical_layout::addObject(gui::gui_object * object, const std::string & name)
 {
-	std::string object_name = name;
-
-	if (object_name == "")
-	{
-		object_name = getUniqeName();
-	}
-
-	if (_gui_objects.count(object_name) == 1)
-	{
-		remove(object_name);
-	}
-
-	std::pair<std::string, std::pair<gui::gui_object*, bool>> pair{ object_name,{ object, true } };
-	_gui_objects.insert(pair);
-	object->setOwner(*_owner);
-
-	re_size();
-
-	return object;
+	return addToMap(object, name, false);
 }
 
-gui::gui_object * gui::Vertical_layout::add(gui::gui_object & object, const std::string & name)
+gui::gui_object * gui::Vertical_layout::addObject(gui::gui_object & object, const std::string & name)
 {
-	std::string object_name = name;
-
-	if (object_name == "")
-	{
-		object_name = getUniqeName();
-	}
-
-	if (_gui_objects.count(object_name) == 1)
-	{
-		remove(object_name);
-	}
-
-	std::pair<std::string, std::pair<gui::gui_object*, bool>> pair{ object_name,{ &object, false } };
-	_gui_objects.insert(pair);
-	object.setOwner(*_owner);
-
-	re_size();
-
-	return &object;
+	return addToMap(object, name, false);
 }
 
 void gui::Vertical_layout::remove(const std::string & name)
@@ -111,7 +82,7 @@ void gui::Vertical_layout::remove(const gui::gui_object * object)
 
 	if (poz != _gui_objects.end())
 	{
-		if (poz->second.second)
+		if (poz->second.second.first)
 		{
 			delete poz->second.first;
 		}
@@ -168,13 +139,23 @@ const gui::Text_style& gui::Vertical_layout::getTextStyle() const
 
 void gui::Vertical_layout::re_size()
 {
-	float objects_height = _size.y / _gui_objects.size();
+	std::vector<gui::gui_object*> layout_objects;
+
+	for (auto &x : _gui_objects)
+	{
+		if (x.second.second.first)
+		{
+			layout_objects.push_back(x.second.first);
+		}
+	}
+
+	float objects_height = _size.y / layout_objects.size();
 	float objects_position_y = _position.y;
 
-	for (auto x : _gui_objects)
+	for (auto x : layout_objects)
 	{
-		x.second.first->setSize({ _size.y, objects_height });
-		x.second.first->setPosition({ _position.x, objects_position_y });
+		x->setSize({ _size.y, objects_height });
+		x->setPosition({ _position.x, objects_position_y });
 		objects_position_y += objects_height;
 	}
 }
@@ -183,7 +164,7 @@ gui::Vertical_layout::~Vertical_layout()
 {
 	for (auto &x : _gui_objects)
 	{
-		if (x.second.second)
+		if (x.second.second.first)
 		{
 			delete x.second.first;
 		}
@@ -220,4 +201,50 @@ std::string gui::Vertical_layout::getUniqeName()
 	std::string name{ "___" };
 	name += std::to_string(_uniqe_name_count++);
 	return name;
+}
+
+gui::gui_object * gui::Vertical_layout::addToMap(gui::gui_object * object, const std::string & name, bool add_to_layout)
+{
+	std::string object_name = name;
+
+	if (object_name == "")
+	{
+		object_name = getUniqeName();
+	}
+
+	if (_gui_objects.count(object_name) == 1)
+	{
+		remove(object_name);
+	}
+
+	std::pair<std::string, std::pair<gui::gui_object*, std::pair<bool, bool>>> pair{ object_name,{ object, {true, add_to_layout } } };
+	_gui_objects.insert(pair);
+	object->setOwner(*this);
+
+	re_size();
+
+	return object;
+}
+
+gui::gui_object * gui::Vertical_layout::addToMap(gui::gui_object & object, const std::string & name, bool add_to_layout)
+{
+	std::string object_name = name;
+
+	if (object_name == "")
+	{
+		object_name = getUniqeName();
+	}
+
+	if (_gui_objects.count(object_name) == 1)
+	{
+		remove(object_name);
+	}
+
+	std::pair<std::string, std::pair<gui::gui_object*, std::pair<bool, bool>>> pair{ object_name,{ &object, {false, add_to_layout } } };
+	_gui_objects.insert(pair);
+	object.setOwner(*this);
+
+	re_size();
+
+	return &object;
 }

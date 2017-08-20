@@ -13,11 +13,11 @@ namespace gui
 	class managing_gui_object : public gui_object, public owner
 	{
 	public:
-		virtual void up_date(const sf::Window&, duration, Event&) = 0;
+		virtual void up_date(const sf::Window & window, duration time_elapsed, Event & evet) = 0;
 
-		virtual void setTextStyle(const Text_style&) = 0;
+		virtual void setTextStyle(const Text_style & text_style) = 0;
 
-		virtual gui::gui_object* get(const std::string&) const = 0;
+		virtual gui::gui_object* get(const std::string & name) const = 0;
 	};
 
 }

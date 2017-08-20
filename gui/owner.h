@@ -12,8 +12,8 @@ namespace gui
 	{
 	public:
 		
-		virtual gui::gui_object* add(gui::gui_object*, const std::string& = {}) = 0;
-		virtual gui::gui_object * add(gui::gui_object&, const std::string& = {}) = 0;
+		virtual gui::gui_object* addObject(gui::gui_object*, const std::string& = {}) = 0;
+		virtual gui::gui_object * addObject(gui::gui_object&, const std::string& = {}) = 0;
 
 		virtual void remove(const std::string&) = 0;
 		virtual void remove(const gui::gui_object *) = 0;

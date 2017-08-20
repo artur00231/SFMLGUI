@@ -11,7 +11,7 @@ namespace gui
 	class Vertical_layout : public managing_gui_object
 	{
 	public:
-		Vertical_layout(const Text_style&, owner&);
+		Vertical_layout(owner&, const Text_style* = {});
 
 		void setSize(const sf::Vector2f&) override;
 		void setPosition(const sf::Vector2f&) override;
@@ -22,8 +22,13 @@ namespace gui
 
 		void setOwner(owner&) override;
 
-		gui::gui_object * add(gui::gui_object*, const std::string& = {}) override;
-		gui::gui_object * add(gui::gui_object&, const std::string& = {}) override;
+		gui::gui_object * addObject(gui::gui_object*, const std::string& = {}) override;
+		gui::gui_object * addObject(gui::gui_object&, const std::string& = {}) override;
+
+		template<typename T>
+		T* add(T* object, const std::string & name = {});
+		template<typename T>
+		T* add(T& object, const std::string & name = {});
 
 		void remove(const std::string&) override;
 		void remove(const gui::gui_object *) override;
@@ -45,17 +50,32 @@ namespace gui
 
 	protected:
 		void checkRadio_buttons(std::vector<gui::Radio_button*>&);
-
 		std::string getUniqeName();
 
+		gui::gui_object * addToMap(gui::gui_object*, const std::string&, bool addToLayout);
+		gui::gui_object * addToMap(gui::gui_object&, const std::string&, bool addToLayout);
+
 	private:
-		std::unordered_map<std::string, std::pair<gui::gui_object*, bool>> _gui_objects;
+		std::unordered_map<std::string, std::pair<gui::gui_object*, std::pair<bool, bool>>> _gui_objects;
 		long long _uniqe_name_count = 0;
 		Text_style _default_text_style;
 		sf::Vector2f _position, _size;
-		owner * _owner;
 	};
 
+}
+
+template<typename T>
+inline T* gui::Vertical_layout::add(T* object, const std::string & name)
+{
+	static_assert(std::is_convertible<T*, gui::gui_object*>::value, "Can not convertible argument");
+	return static_cast<T*>(addToMap(object, name, true));
+}
+
+template<typename T>
+inline T* gui::Vertical_layout::add(T& object, const std::string & name)
+{
+	static_assert(std::is_convertible<T*, gui::gui_object*>::value, "Can not convertible argument");
+	return static_cast<T*>(addToMap(object, name, true));
 }
 
 #endif // !GUI_VERTICAL_LAYOUT_H

@@ -16,12 +16,12 @@ void gui::Gui::draw(sf::RenderTarget & window) const
 	}
 }
 
-gui::gui_object * gui::Gui::add(gui::gui_object * object, const std::string & name)
+gui::gui_object * gui::Gui::addObject(gui::gui_object * object, const std::string & name)
 {
 	return addToGui(object, name);
 }
 
-gui::gui_object * gui::Gui::add(gui::gui_object & object, const std::string & name)
+gui::gui_object * gui::Gui::addObject(gui::gui_object & object, const std::string & name)
 {
 	return addToGui(object, name);
 }
@@ -88,6 +88,10 @@ void gui::Gui::up_date(const sf::Window & window)
 
 			_event.getEvents(*object, window);
 			object->up_date(std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed));
+		}
+		else if (gui::managing_gui_object * object = dynamic_cast<gui::managing_gui_object*>(x.second.first))
+		{
+			object->up_date(window, std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed), _event);
 		}
 	}
 
