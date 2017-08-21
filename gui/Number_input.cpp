@@ -465,7 +465,7 @@ void gui::Number_input::resize()
 		// button_character_size_base = std::min({button_size_x, button_size_y});
 		float button_character_size_base = button_size_x < button_size_y ? button_size_x : button_size_y;
 
-		unsigned int button_character_size = std::floor(button_character_size_base * 0.8f);
+		unsigned int button_character_size = static_cast<unsigned int>(std::floor(button_character_size_base * 0.8f));
 
 		_up.getLabel().setCharacterSize(button_character_size);
 		_down.getLabel().setCharacterSize(button_character_size);
