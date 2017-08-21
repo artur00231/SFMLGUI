@@ -89,9 +89,9 @@ void gui::Gui::up_date(const sf::Window & window)
 			_event.getEvents(*object, window);
 			object->up_date(std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed));
 		}
-		else if (gui::managing_gui_object * object = dynamic_cast<gui::managing_gui_object*>(x.second.first))
+		else if (gui::managing_gui_object * managing_object = dynamic_cast<gui::managing_gui_object*>(x.second.first))
 		{
-			object->up_date(window, std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed), _event);
+			managing_object->up_date(window, std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed), _event);
 		}
 	}
 

@@ -66,7 +66,7 @@ namespace gui
 		const sf::Vector2f& getPosition() const override;
 		const sf::Rect<float> getGlobalBounds() const override;
 
-		void up_date(gui::duration time_elipsed) override;
+		void up_date(gui::duration time_elapsed) override;
 		void draw(sf::RenderTarget & render_target) const override;
 
 		void setOwner(owner&) override;
@@ -79,8 +79,8 @@ namespace gui
 		bool isClickedChange() const override;
 		bool isNeedResize() const override;
 
-		void setActive(bool) override;
-		void setFocus(bool) override;
+		void setActive(bool active) override;
+		void setFocus(bool focus) override;
 
 		void resize() override;
 
