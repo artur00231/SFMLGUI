@@ -8,16 +8,13 @@
 
 sf::Vector2f to_float_vector(sf::Vector2i & a)
 {
-	return sf::Vector2f(a.x, a.y);
+	return sf::Vector2f(static_cast<float>(a.x), static_cast<float>(a.y));
 }
 
 int main()
 {
 	int heigth = 720;
 	int width = 1280;
-
-	int x = 55;
-	int y = 15;
 
 	sf::ContextSettings window_settings;
 	window_settings.antialiasingLevel = 0;

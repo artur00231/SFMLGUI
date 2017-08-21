@@ -65,7 +65,7 @@ void gui::Background::draw(sf::RenderTarget & render_target) const
 	}
 }
 
-void gui::Background::setOwner(gui::owner & owner)
+void gui::Background::setOwner(gui::owner&)
 {
 	// Do nothing
 }
