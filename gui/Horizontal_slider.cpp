@@ -1,9 +1,13 @@
 #include "Horizontal_slider.h"
 
-gui::Horizontal_slider::Horizontal_slider(long long max, long long min) : _left{}, _max{max}, _min{min}
+gui::Horizontal_slider::Horizontal_slider(long long max, long long min) : _left{"<"}, _right{">"}, _max{ max }, _min{ min }
 {
-	_left.getFrame().setThickness(2);
-	_right.getFrame().setThickness(2);
+	_left.getBackground().setColor(sf::Color::Red);
+	_left.getFunction().set([this]() {this->subtract(); });
+	_right.getBackground().setColor(sf::Color::Red);
+	_right.getFunction().set([this]() {this->add(); });
+
+	_middle.getBackground().setColor(sf::Color::Green);
 }
 
 void gui::Horizontal_slider::setSize(const sf::Vector2f & size)
@@ -21,6 +25,10 @@ void gui::Horizontal_slider::setPosition(const sf::Vector2f & position)
 
 	_left.setPosition({ _position.x + frame_thickness, _position.y + frame_thickness });
 	_right.setPosition({ _position.x + _size.x - frame_thickness - _button_min_size.x, _position.y + frame_thickness });
+
+	auto current_step = getCurrentStep();
+
+	_middle.setPosition({ _position.x + frame_thickness + _left.getSize().x + current_step * _middle_min_size.x, _position.y + frame_thickness });
 
 	sf::Rect<float> to_fit{ { _position.x + frame_thickness,  _position.y + frame_thickness }, { _size.x - 2 * frame_thickness, _size.x - 2 * frame_thickness } };
 	_background.fitTo(to_fit);
@@ -52,12 +60,18 @@ void gui::Horizontal_slider::up_date(gui::duration time_elapsed)
 
 void gui::Horizontal_slider::draw(sf::RenderTarget & render_target) const
 {
+	_background.draw(render_target);
+	_left.draw(render_target);
+	_right.draw(render_target);
+	_middle.draw(render_target);
+	_frame.draw(render_target);
 }
 
 void gui::Horizontal_slider::setOwner(owner & owner)
 {
 	owner.addObject(_left);
 	owner.addObject(_right);
+	owner.addObject(_middle);
 }
 
 bool gui::Horizontal_slider::isActive() const
@@ -107,18 +121,37 @@ void gui::Horizontal_slider::setFocus(bool focus)
 
 void gui::Horizontal_slider::setValue(long long value)
 {
-	_value = value;
+	if (value > _max)
+	{
+		_value = _max;
+	}
+	else if (value < _min)
+	{
+		_value = _min;
+	}
+	else
+	{
+		_value = value;
+	}
+
+	setPosition(_position);
 }
 
 void gui::Horizontal_slider::setMinMax(long long min, long long max)
 {
 	_min = min;
-	_max = _max;
-}
+	_max = max;
 
-void gui::Horizontal_slider::setStepValue(long long step)
-{
-	_step = step;
+	if (_value > _max)
+	{
+		_value = _max;
+	}
+	else if (_value < _min)
+	{
+		_value = _min;
+	}
+
+	resize();
 }
 
 long long gui::Horizontal_slider::getNumber()
@@ -131,11 +164,6 @@ std::pair<long long, long long> gui::Horizontal_slider::getMInMax()
 	return std::pair<long long, long long>{ _min, _max };
 }
 
-long long gui::Horizontal_slider::getStepValue()
-{
-	return _step;
-}
-
 void gui::Horizontal_slider::resize()
 {
 	_need_resize = false;
@@ -143,22 +171,68 @@ void gui::Horizontal_slider::resize()
 	bool fit_x = _size.x >= 2 * _button_min_size.x;
 	bool fit_y = _size.y >= _button_min_size.y;
 
+	float frame_thickness = _frame.getThickness();
+
 	if (fit_x && fit_y)
 	{
-		sf::Vector2f button_size{ _button_min_size.x, _size.y - 2 * _frame.getThickness()};
+		// button_character_size_base = std::min({button_size_x, button_size_y});
+		float button_character_size_base = _button_min_size.x < _size.y - 2 * frame_thickness ? _button_min_size.x : _size.y - 2 * frame_thickness;
+		unsigned int button_character_size = static_cast<unsigned int>(std::floor(button_character_size_base * 0.6f));
+
+		sf::Vector2f button_size{ _button_min_size.x, _size.y - 2 * frame_thickness };
 		_left.setSize(button_size);
+		_left.getLabel().setCharacterSize(button_character_size);
 		_right.setSize(button_size);
+		_right.getLabel().setCharacterSize(button_character_size);
+
+		long long steps = _max - _min;
+
+		float middle_size_x = _size.x - 2 * frame_thickness - 2 * button_size.x;
+
+		if (steps < 1)
+		{
+			_middle.setSize({ middle_size_x, _size.y - 2 * frame_thickness });
+		}
+		else
+		{
+			long long max_steps = static_cast<long long>(std::floor(middle_size_x / _middle_min_size.x)) - 1;
+
+			if (max_steps < steps)
+			{
+				steps = max_steps;
+				
+				_max = _min + max_steps;
+
+				if (_value > _max)
+				{
+					_value = _max;
+				}
+				else if (_value < _min)
+				{
+					_value = _min;
+				}
+			}
+
+			if (max_steps < 2)
+			{
+				_middle.setSize({ middle_size_x, _size.y - 2 * frame_thickness });
+			}
+			else
+			{
+				_middle.setSize({ middle_size_x - steps * _middle_min_size.x , _size.y - 2 * frame_thickness });
+			}
+		}
 	}
 	else
 	{
 		if (!fit_x)
 		{
-			_size.x = 2 * _button_min_size.x + 2 * _frame.getThickness();
+			_size.x = 2 * _button_min_size.x + 2 * frame_thickness;
 		}
 
 		if (!fit_y)
 		{
-			_size.y = _button_min_size.y + 2 * _frame.getThickness();
+			_size.y = _button_min_size.y + 2 * frame_thickness;
 		}
 
 		resize();
@@ -205,4 +279,39 @@ void gui::Horizontal_slider::setClickedChange(bool clicked_change)
 gui::Mouse_events & gui::Horizontal_slider::getMouse_event()
 {
 	return _events;
+}
+
+unsigned long long gui::Horizontal_slider::getCurrentStep()
+{
+	return _value - _min;
+}
+
+void gui::Horizontal_slider::add()
+{
+	if (_right.isClickedChange() && _right.isClicked())
+	{
+		if (++_value > _max)
+		{
+			_value = _max;
+		}
+
+		setPosition(_position);
+	}
+}
+
+void gui::Horizontal_slider::subtract()
+{
+	if (_left.isClickedChange() && _left.isClicked())
+	{
+		if (--_value < _min)
+		{
+			_value = _min;
+		}
+
+		setPosition(_position);
+	}
+}
+
+void gui::Horizontal_slider::setMiddlePosition()
+{
 }
