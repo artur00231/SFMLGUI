@@ -8,16 +8,13 @@
 
 sf::Vector2f to_float_vector(sf::Vector2i & a)
 {
-	return sf::Vector2f(a.x, a.y);
+	return sf::Vector2f(static_cast<float>(a.x), static_cast<float>(a.y));
 }
 
 int main()
 {
 	int heigth = 720;
 	int width = 1280;
-
-	int x = 55;
-	int y = 15;
 
 	sf::ContextSettings window_settings;
 	window_settings.antialiasingLevel = 0;
@@ -29,24 +26,15 @@ int main()
 
 	gui::Gui gui(s);
 
-	gui::Vertical_layout * layout = gui.add(new gui::Vertical_layout{ gui });
+	gui::Horizontal_slider * slider = gui.add(new gui::Horizontal_slider{});
 
-	layout->setPosition({ 20, 20 });
-	layout->setSize({ 150, 500 });
+	slider->setPosition({ 20, 20 });
+	slider->setSize({ 100, 50 });
+	slider->setMinMax(0, 4);
 
-	auto checkbox = layout->add(new gui::Checkbox{ "1" });
-	checkbox->getFrame().setColor(sf::Color::Red);
-	checkbox->getFrame().setThickness(2);
+	auto x = slider->getMInMax();
 
-	checkbox = layout->add(new gui::Checkbox{ "2" });
-
-	checkbox->getFrame().setColor(sf::Color::Red);
-	checkbox->getFrame().setThickness(2);
-
-	auto a =layout->add(new gui::Number_input{});
-
-	a->getFrame().setColor(sf::Color::Red);
-	a->getFrame().setThickness(2);
+	std::cout << x.second - x.first;
 
 	while (window.isOpen())
 	{
