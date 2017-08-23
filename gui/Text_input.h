@@ -71,7 +71,7 @@ namespace gui
 		const sf::Vector2f& getPosition() const override;
 		const sf::Rect<float> getGlobalBounds() const override;
 
-		void up_date(gui::duration time_elapsed) override;
+		void up_date(gui::duration time_elapsed, const Mouse_info & mouse_info) override;
 		void draw(sf::RenderTarget & render_target) const override;
 
 		void setOwner(owner & owner) override;
@@ -113,7 +113,6 @@ namespace gui
 		void setClicked(bool clicked) override;
 		void setHoverChange(bool hover_change) override;
 		void setClickedChange(bool clicked_change) override;
-		Mouse_events& getMouse_event() override;
 		void hideTextPointer();
 		void showTextPointer();
 		void setLabelString();
@@ -125,7 +124,6 @@ namespace gui
 		sf::Vector2f _size, _position;
 		Function _function;
 		bool _hover, _clicked, _active = true, _focus, _hover_change, _clicked_change, _need_resize, _password;
-		Mouse_events _events;
 
 		sf::String _text;
 		std::size_t _text_pointer_position;

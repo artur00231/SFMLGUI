@@ -30,11 +30,18 @@ int main()
 
 	slider->setPosition({ 20, 20 });
 	slider->setSize({ 100, 50 });
-	slider->setMinMax(0, 4);
+	slider->setMinMax(0, 20);
 
 	auto x = slider->getMInMax();
 
 	std::cout << x.second - x.first;
+
+	gui::Text_input * text = gui.add(new gui::Text_input);
+
+	text->setPosition({ 200, 20 });
+	text->setSize({ 100, 50 });
+	text->getFrame().setThickness(1);
+	text->getFrame().setColor(sf::Color::Black);
 
 	while (window.isOpen())
 	{

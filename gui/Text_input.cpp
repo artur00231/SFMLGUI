@@ -35,7 +35,7 @@ const sf::Rect<float> gui::Text_input::getGlobalBounds() const
 	return _frame.getGlobalBounds();
 }
 
-void gui::Text_input::up_date(gui::duration time_elapsed)
+void gui::Text_input::up_date(gui::duration time_elapsed, const Mouse_info & mouse_info)
 {
 	if (isFocused())
 	{
@@ -58,11 +58,9 @@ void gui::Text_input::up_date(gui::duration time_elapsed)
 
 	}
 
-	_function(_events, time_elapsed, this);
+	_function(mouse_info, time_elapsed, this);
 
 	setLabelString();
-
-	_events.clear();
 }
 
 void gui::Text_input::draw(sf::RenderTarget & render_target) const
@@ -309,11 +307,6 @@ void gui::Text_input::setClickedChange(bool clicked_change)
 	_clicked_change = clicked_change;
 }
 
-gui::Mouse_events& gui::Text_input::getMouse_event()
-{
-	return _events;
-}
-
 void gui::Text_input::hideTextPointer()
 {
 	_text.erase(_text_pointer_position);
@@ -384,7 +377,7 @@ void gui::Text_input::setLabelString()
 		if (_text.getSize() > 1)
 		{
 			_text.erase(_text.getSize() - 1);
-			--_text_pointer_position;
+			_text_pointer_position = _text.getSize();
 			setLabelString();
 		}
 

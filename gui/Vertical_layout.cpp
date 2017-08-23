@@ -120,7 +120,11 @@ void gui::Vertical_layout::up_date(const sf::Window & window, gui::duration time
 			}
 
 			event.getEvents(*object, window);
-			object->up_date(time_elapsed);
+			object->up_date(std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed), event.getMouseInfo());
+		}
+		else if (gui::managing_gui_object * managing_object = dynamic_cast<gui::managing_gui_object*>(x.second.first))
+		{
+			managing_object->up_date(window, std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed), event);
 		}
 	}
 

@@ -4,6 +4,7 @@
 #include "SFML\Graphics.hpp"
 #include "active_gui_object.h"
 #include "text_active_gui_object.h"
+#include "Mouse_info.h"
 #include <deque>
 #include <cctype>
 
@@ -18,15 +19,18 @@ namespace gui
 		void getEvents(active_gui_object & object, const sf::Window & window);
 		void checkFocusedObject();
 
+		Mouse_info& getMouseInfo();
+
 	protected:
 		bool checkCharacter(sf::Uint32 character);
 		bool checkSpecialKey(sf::Keyboard::Key key);
 
 	private:
-		Mouse_events _events;
 		sf::String _input_text;
 		active_gui_object * _focused_object;
 		std::deque<sf::Keyboard::Key> _special_keys;
+
+		Mouse_info _mouse_info;
 	};
 
 }

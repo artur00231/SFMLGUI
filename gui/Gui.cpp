@@ -3,6 +3,7 @@
 gui::Gui::Gui(const Text_style & text_style)
 {
 	_default_text_style = text_style;
+	_mouse_info_pointer = &_event.getMouseInfo();
 
 	// Start the timer
 	_last_time = clock.now();
@@ -87,7 +88,7 @@ void gui::Gui::up_date(const sf::Window & window)
 			}
 
 			_event.getEvents(*object, window);
-			object->up_date(std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed));
+			object->up_date(std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed), *_mouse_info_pointer);
 		}
 		else if (gui::managing_gui_object * managing_object = dynamic_cast<gui::managing_gui_object*>(x.second.first))
 		{

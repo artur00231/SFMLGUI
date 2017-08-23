@@ -37,12 +37,9 @@ const sf::Rect<float> gui::Button::getGlobalBounds() const
 	return _frame.getGlobalBounds();
 }
 
-void gui::Button::up_date(gui::duration time_elapsed)
+void gui::Button::up_date(gui::duration time_elapsed, const Mouse_info & mouse_info)
 {
-	_function(_events, time_elapsed, this);
-
-	// Clear _events to prevent overflow
-	_events.clear();
+	_function(mouse_info, time_elapsed, this);
 }
 
 void gui::Button::draw(sf::RenderTarget & render_target) const
@@ -166,9 +163,4 @@ void gui::Button::setHoverChange(bool hover_change)
 void gui::Button::setClickedChange(bool clicked_change)
 {
 	_clicked_change = clicked_change;
-}
-
-gui::Mouse_events& gui::Button::getMouse_event()
-{
-	return _events;
 }

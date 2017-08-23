@@ -62,12 +62,10 @@ const sf::Rect<float> gui::Radio_button::getGlobalBounds() const
 	return _frame.getGlobalBounds();
 }
 
-void gui::Radio_button::up_date(gui::duration time_elapsed)
+void gui::Radio_button::up_date(gui::duration time_elapsed, const Mouse_info & mouse_info)
 {
 
-	_function(_events, time_elapsed, this);
-
-	_events.clear();
+	_function(mouse_info, time_elapsed, this);
 }
 
 void gui::Radio_button::draw(sf::RenderTarget & render_target) const
@@ -258,11 +256,6 @@ void gui::Radio_button::setClickedChange(bool clicked_change)
 			break;
 		}
 	}
-}
-
-gui::Mouse_events& gui::Radio_button::getMouse_event()
-{
-	return _events;
 }
 
 void gui::Radio_button::setState(Radio_button_state checkbox_state)

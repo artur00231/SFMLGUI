@@ -8,7 +8,7 @@ void gui::Function::set(gui::function * function)
 	_function_4 = nullptr;
 }
 
-void gui::Function::set(std::function<void(Mouse_events&, gui::duration&, active_gui_object*)> function)
+void gui::Function::set(std::function<void(const Mouse_info&, gui::duration&, active_gui_object*)> function)
 {
 	_function_1.reset();
 	_function_2.swap(function);
@@ -40,15 +40,15 @@ void gui::Function::unset()
 	_function_4 = nullptr;
 }
 
-void gui::Function::operator()(Mouse_events & mouse_events, gui::duration & duration, active_gui_object * object)
+void gui::Function::operator()(const Mouse_info & mouse_info, gui::duration & duration, active_gui_object * object)
 {
 	if (_function_1)
 	{
-		(*_function_1)(mouse_events, duration, object);
+		(*_function_1)(mouse_info, duration, object);
 	}
 	else if (_function_2)
 	{
-		_function_2(mouse_events, duration, object);
+		_function_2(mouse_info, duration, object);
 	}
 	else if (_function_3)
 	{
