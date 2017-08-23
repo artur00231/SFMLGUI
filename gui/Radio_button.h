@@ -78,7 +78,7 @@ namespace gui
 		const sf::Vector2f& getPosition() const override;
 		const sf::Rect<float> getGlobalBounds() const override;
 
-		void up_date(gui::duration time_elapsed) override;
+		void up_date(gui::duration time_elapsed, const Mouse_info & mouse_info) override;
 		void draw(sf::RenderTarget & render_target) const override;
 
 		void setOwner(owner & owner) override;
@@ -121,7 +121,6 @@ namespace gui
 		void setClicked(bool clicked) override;
 		void setHoverChange(bool hover_change) override;
 		void setClickedChange(bool clicked_change) override;
-		Mouse_events& getMouse_event() override;
 
 	private:
 		Label _label;
@@ -131,7 +130,6 @@ namespace gui
 		sf::Vector2f _size, _position;
 		Function _function;
 		bool _hover, _clicked, _active = true, _focus, _hover_change, _clicked_change, _need_resize, _exclusive;
-		Mouse_events _events;
 		float _proportions_text_checked_frame = 1.2f, _proportions_checked_filed = 0.2f;
 		Radio_button_state _radio_button_state;
 

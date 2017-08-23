@@ -75,6 +75,7 @@ namespace gui
 		Event _event;
 		long long _uniqe_name_count = 0;
 		Text_style _default_text_style;
+		Mouse_info* _mouse_info_pointer;
 	};
 
 }

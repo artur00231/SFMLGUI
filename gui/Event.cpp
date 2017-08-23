@@ -4,11 +4,11 @@ void gui::Event::add(const sf::Event & event)
 {
 	if (event.type == sf::Event::MouseButtonPressed)
 	{
-		_events.push_back({ Mouse_event_type::PRESSED, event.mouseButton.button });
+		_mouse_info.setButtonState(event.mouseButton.button, true);
 	}
 	else if (event.type == sf::Event::MouseButtonReleased)
 	{
-		_events.push_back({ Mouse_event_type::RELEASED, event.mouseButton.button });
+		_mouse_info.setButtonState(event.mouseButton.button, false);
 	}
 	else if (event.type == sf::Event::TextEntered)
 	{
@@ -24,13 +24,22 @@ void gui::Event::add(const sf::Event & event)
 			_special_keys.push_back(event.key.code);
 		}
 	}
+	else if (event.type == sf::Event::MouseWheelScrolled)
+	{
+		_mouse_info.setMouseWheelMove(event.mouseWheelScroll.delta);
+	}
+	else if (event.type == sf::Event::MouseMoved)
+	{
+		auto mouse_position = event.mouseMove;
+		_mouse_info.setMousePosition({ static_cast<float>(mouse_position.x), static_cast<float>(mouse_position.y) });
+	}
 }
 
 void gui::Event::clear()
 {
-	_events.clear();
 	_input_text.clear();
 	_special_keys.clear();
+	_mouse_info.update();
 }
 
 void gui::Event::getEvents(active_gui_object & object, const sf::Window & window)
@@ -65,34 +74,38 @@ void gui::Event::getEvents(active_gui_object & object, const sf::Window & window
 			object.setHoverChange(true);
 		}
 
-		for (auto & x : _events)
+		auto mouse_left_status = _mouse_info.getButtonState(sf::Mouse::Button::Left);
+
+		// mouse_left_status.first <- cliked?
+		// mouse_left_status.second <- cliked_change?
+		if (mouse_left_status.first && mouse_left_status.second)
 		{
-			if (x.second == sf::Mouse::Button::Left)
+			object.setClicked(true);
+			object.setClickedChange(true);
+			if (_focused_object != &object)
 			{
-				if (x.first == gui::Mouse_event_type::PRESSED)
+				// Set focus
+				object.setFocus(true);
+				if (_focused_object != nullptr)
 				{
-					object.setClicked(true);
-					object.setClickedChange(true);
-					if (_focused_object != &object)
-					{
-						// Set focus
-						object.setFocus(true);
-						if (_focused_object != nullptr)
-						{
-							_focused_object->setFocus(false);
-						}
-						_focused_object = &object;
-					}
+					_focused_object->setFocus(false);
 				}
-				else
-				{
-					object.setClicked(false);
-					object.setClickedChange(true);
-				}
+				_focused_object = &object;
+			}
+		}
+		else if (mouse_left_status.first)
+		{
+			object.setClicked(true);
+		}
+		else
+		{
+			if (object.isClicked())
+			{
+				object.setClicked(false);
+				object.setClickedChange(true);
 			}
 		}
 
-		object.getMouse_event() = _events;
 	}
 	else
 	{
@@ -133,6 +146,11 @@ void gui::Event::checkFocusedObject()
 			_focused_object = nullptr;
 		}
 	}
+}
+
+gui::Mouse_info & gui::Event::getMouseInfo()
+{
+	return _mouse_info;
 }
 
 bool gui::Event::checkCharacter(sf::Uint32 character)

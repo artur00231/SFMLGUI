@@ -12,7 +12,7 @@ namespace gui
 	class function
 	{
 	public:
-		virtual void operator()(std::deque<Mouse_event>&, gui::duration&, active_gui_object*) = 0;
+		virtual void operator()(const Mouse_info&, gui::duration&, active_gui_object*) = 0;
 	};
 
 	namespace modifier
@@ -27,7 +27,7 @@ namespace gui
 			Function_modifier& operator=(Function_modifier&&) = default;
 
 			virtual void set(function * function_object) = 0;
-			virtual void set(std::function<void(Mouse_events&, gui::duration&, active_gui_object*)> function) = 0;
+			virtual void set(std::function<void(const Mouse_info&, gui::duration&, active_gui_object*)> function) = 0;
 			virtual void set(std::function<void(active_gui_object*)> function) = 0;
 			virtual void set(std::function<void()> function) = 0;
 
@@ -51,19 +51,19 @@ namespace gui
 		Function& operator=(Function&&) = default;
 
 		void set(function * function_object) override;
-		void set(std::function<void(Mouse_events&, gui::duration&, active_gui_object*)> function) override;
+		void set(std::function<void(const Mouse_info&, gui::duration&, active_gui_object*)> function) override;
 		void set(std::function<void(active_gui_object*)> function) override;
 		void set(std::function<void()> function) override;
 
 		void unset() override;
 
-		void operator()(Mouse_events & mouse_events, gui::duration & time_elapsed, active_gui_object * object);
+		void operator()(const Mouse_info & mouse_info, gui::duration & time_elapsed, active_gui_object * object);
 
 		~Function() {};
 
 	private:
 		std::unique_ptr<function> _function_1;
-		std::function<void(Mouse_events&, gui::duration&, active_gui_object*)> _function_2;
+		std::function<void(const Mouse_info&, gui::duration&, active_gui_object*)> _function_2;
 		std::function<void(active_gui_object*)> _function_3;
 		std::function<void()> _function_4;
 	};

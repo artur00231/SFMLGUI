@@ -59,12 +59,9 @@ const sf::Rect<float> gui::Checkbox::getGlobalBounds() const
 	return _frame.getGlobalBounds();
 }
 
-void gui::Checkbox::up_date(gui::duration time_elapsed)
+void gui::Checkbox::up_date(gui::duration time_elapsed, const Mouse_info & mouse_info)
 {
-
-	_function(_events, time_elapsed, this);
-
-	_events.clear();
+	_function(mouse_info, time_elapsed, this);
 }
 
 void gui::Checkbox::draw(sf::RenderTarget & render_target) const
@@ -260,11 +257,6 @@ void gui::Checkbox::setClickedChange(bool clicked_change)
 			break;
 		}
 	}
-}
-
-gui::Mouse_events& gui::Checkbox::getMouse_event()
-{
-	return _events;
 }
 
 void gui::Checkbox::setState(Checkbox_state checkbox_state)

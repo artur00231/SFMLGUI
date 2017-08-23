@@ -22,7 +22,7 @@ namespace gui
 		const sf::Vector2f& getPosition() const override;
 		const sf::Rect<float> getGlobalBounds() const override;
 
-		void up_date(gui::duration time_elapsed) override;
+		void up_date(gui::duration time_elapsed, const Mouse_info & mouse_info) override;
 		void draw(sf::RenderTarget & render_target) const override;
 
 		void setOwner(owner & owner) override;
@@ -57,12 +57,12 @@ namespace gui
 		void setClicked(bool clicked) override;
 		void setHoverChange(bool hover_change) override;
 		void setClickedChange(bool clicked_change) override;
-		Mouse_events& getMouse_event() override;
 
 		unsigned long long getCurrentStep();
 		void add();
 		void subtract();
-		void setMiddlePosition();
+
+		void setMiddleButtonPosition(const Mouse_info & mouse_info);
 
 	private:
 		Button _left, _right, _middle;
@@ -71,13 +71,13 @@ namespace gui
 		Function _function;
 		sf::Vector2f _size, _position;
 		bool _hover, _clicked, _active = true, _focus, _hover_change, _clicked_change, _need_resize;
-		Mouse_events _events;
 
 		long long _max, _min, _step, _value;
 		sf::Vector2f _button_min_size{20, 20};
-		sf::Vector2f _middle_min_size{ 5, 20 };
+		sf::Vector2f _middle_button_min_size{ 5, 20 };
 
-		sf::Vector2i m_pos;
+		sf::Vector2f _mouse_move;
+		bool _follow_mouse;
 	};
 
 

@@ -52,7 +52,7 @@ const sf::Rect<float> gui::Number_input::getGlobalBounds() const
 	return _frame.getGlobalBounds();
 }
 
-void gui::Number_input::up_date(gui::duration time_elapsed)
+void gui::Number_input::up_date(gui::duration time_elapsed, const Mouse_info & mouse_info)
 {
 	if (isFocused())
 	{
@@ -75,11 +75,9 @@ void gui::Number_input::up_date(gui::duration time_elapsed)
 
 	}
 
-	_function(_events, time_elapsed, this);
+	_function(mouse_info, time_elapsed, this);
 
 	setLabelString();
-
-	_events.clear();
 }
 
 void gui::Number_input::draw(sf::RenderTarget & render_target) const
@@ -534,11 +532,6 @@ void gui::Number_input::setHoverChange(bool hover_change)
 void gui::Number_input::setClickedChange(bool clicked_change)
 {
 	_clicked_change = clicked_change;
-}
-
-gui::Mouse_events& gui::Number_input::getMouse_event()
-{
-	return _events;
 }
 
 void gui::Number_input::hideTextPointer() const
