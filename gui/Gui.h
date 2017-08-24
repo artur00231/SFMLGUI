@@ -17,6 +17,7 @@
 #include "managing_gui_object.h"
 #include "Vertical_layout.h"
 #include "Horizontal_slider.h"
+#include "Vertical_slider.h"
 
 #include <unordered_map>
 #include <chrono>

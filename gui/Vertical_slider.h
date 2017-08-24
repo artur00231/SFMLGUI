@@ -1,5 +1,5 @@
-#ifndef GUI_HORIZONTAL_SLIDER_H
-#define GUI_HORIZONTAL_SLIDER_H
+#ifndef GUI_VERTICAL_SLIDER_H
+#define GUI_VERTICAL_SLIDER_H
 
 #include "slider.h"
 #include "Button.h"
@@ -7,13 +7,13 @@
 namespace gui
 {
 
-	class Horizontal_slider : public slider
+	class Vertical_slider : public slider
 	{
 	public:
-		explicit Horizontal_slider(long long max = 0, long long min = 0);
+		explicit Vertical_slider(long long max = 0, long long min = 0);
 
-		Horizontal_slider(Horizontal_slider&&) = default;
-		Horizontal_slider& operator=(Horizontal_slider&&) = default;
+		Vertical_slider(Vertical_slider&&) = default;
+		Vertical_slider& operator=(Vertical_slider&&) = default;
 
 		void setSize(const sf::Vector2f & size) override;
 		void setPosition(const sf::Vector2f & position) override;
@@ -50,11 +50,11 @@ namespace gui
 		modifier::Background_modifier& getBackground();
 		modifier::Function_modifier& getFunction();
 
-		modifier::Button_modifier& getLeft();
-		modifier::Button_modifier& getRight();
+		modifier::Button_modifier& getUp();
+		modifier::Button_modifier& getDown();
 		modifier::Button_modifier& getMiddle();
 
-		~Horizontal_slider() {};
+		~Vertical_slider() {};
 
 	protected:
 		void setHover(bool hover) override;
@@ -69,7 +69,7 @@ namespace gui
 		void setMiddleButtonPosition(const Mouse_info & mouse_info);
 
 	private:
-		Button _left, _right, _middle;
+		Button _up, _down, _middle;
 		Background _background;
 		Frame _frame;
 		Function _function;
@@ -77,8 +77,8 @@ namespace gui
 		bool _hover, _clicked, _active = true, _focus, _hover_change, _clicked_change, _need_resize;
 
 		long long _max, _min, _step, _value;
-		sf::Vector2f _button_min_size{20, 20};
-		sf::Vector2f _middle_button_min_size{ 5, 20 };
+		sf::Vector2f _button_min_size{ 20, 20 };
+		sf::Vector2f _middle_button_min_size{ 20, 5 };
 
 		sf::Vector2f _mouse_move;
 		bool _follow_mouse;
@@ -87,4 +87,4 @@ namespace gui
 
 }
 
-#endif // !GUI_HORIZONTAL_SLIDER_H
+#endif // !GUI_VERTICAL_SLIDER_H

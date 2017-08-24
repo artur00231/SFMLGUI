@@ -27,7 +27,7 @@ void gui::Mouse_info::update()
 {
 	for (int i = 0; i < sf::Mouse::Button::ButtonCount; i++)
 	{
-		_mouse_buttons_state_change[i] = 0;
+		_mouse_buttons_state_change[i] = false;
 	}
 
 	_mouse_move = { 0, 0 };
