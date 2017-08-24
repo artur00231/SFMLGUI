@@ -26,13 +26,23 @@ int main()
 
 	gui::Gui gui(s);
 
-	gui::Horizontal_slider * slider = gui.add(new gui::Horizontal_slider{});
+	gui::Vertical_slider * slider = gui.add(new gui::Vertical_slider{});
 
 	slider->setPosition({ 20, 20 });
-	slider->setSize({ 100, 50 });
-	slider->setMinMax(0, 20);
+	slider->setSize({ 50, 200 });
+	slider->setMinMax(0, 100);
 
-	auto x = slider->getMInMax();
+	auto x = slider->getMinMax();
+
+	std::cout << x.second - x.first << std::endl;
+
+	gui::Horizontal_slider * slider_h = gui.add(new gui::Horizontal_slider{});
+
+	slider_h->setPosition({ 400, 20 });
+	slider_h->setSize({ 200, 50 });
+	slider_h->setMinMax(0, 100);
+
+	x = slider_h->getMinMax();
 
 	std::cout << x.second - x.first;
 

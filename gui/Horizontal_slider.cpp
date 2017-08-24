@@ -34,7 +34,7 @@ void gui::Horizontal_slider::setPosition(const sf::Vector2f & position)
 
 	_middle.setPosition({ _position.x + frame_thickness + _left.getSize().x + current_step * _middle_button_min_size.x, _position.y + frame_thickness });
 
-	sf::Rect<float> to_fit{ { _position.x + frame_thickness,  _position.y + frame_thickness }, { _size.x - 2 * frame_thickness, _size.x - 2 * frame_thickness } };
+	sf::Rect<float> to_fit{ { _position.x + frame_thickness,  _position.y + frame_thickness }, { _size.x - 2 * frame_thickness, _size.y - 2 * frame_thickness } };
 	_background.fitTo(to_fit);
 	_frame.fitTo(to_fit);
 }
@@ -164,7 +164,7 @@ long long gui::Horizontal_slider::getNumber()
 	return _value;
 }
 
-std::pair<long long, long long> gui::Horizontal_slider::getMInMax()
+std::pair<long long, long long> gui::Horizontal_slider::getMinMax()
 {
 	return std::pair<long long, long long>{ _min, _max };
 }
@@ -180,15 +180,9 @@ void gui::Horizontal_slider::resize()
 
 	if (fit_x && fit_y)
 	{
-		// button_character_size_base = std::min({button_size_x, button_size_y});
-		float button_character_size_base = _button_min_size.x < _size.y - 2 * frame_thickness ? _button_min_size.x : _size.y - 2 * frame_thickness;
-		unsigned int button_character_size = static_cast<unsigned int>(std::floor(button_character_size_base * 0.6f));
-
 		sf::Vector2f button_size{ _button_min_size.x, _size.y - 2 * frame_thickness };
 		_left.setSize(button_size);
-		_left.getLabel().setCharacterSize(button_character_size);
 		_right.setSize(button_size);
-		_right.getLabel().setCharacterSize(button_character_size);
 
 		long long steps = _max - _min;
 
@@ -261,6 +255,21 @@ gui::modifier::Function_modifier & gui::Horizontal_slider::getFunction()
 	return _function;
 }
 
+gui::modifier::Button_modifier & gui::Horizontal_slider::getLeft()
+{
+	return _left;
+}
+
+gui::modifier::Button_modifier & gui::Horizontal_slider::getRight()
+{
+	return _right;
+}
+
+gui::modifier::Button_modifier & gui::Horizontal_slider::getMiddle()
+{
+	return _middle;
+}
+
 void gui::Horizontal_slider::setHover(bool hover)
 {
 	_hover = hover;
@@ -319,6 +328,7 @@ void gui::Horizontal_slider::setMiddleButtonPosition(const Mouse_info & mouse_in
 		_mouse_move = { 0, 0 };
 	}
 
+
 	if (!isClicked() && isClickedChange())
 	{
 		_follow_mouse = false;
@@ -334,11 +344,11 @@ void gui::Horizontal_slider::setMiddleButtonPosition(const Mouse_info & mouse_in
 	if (_mouse_move.x > _middle_button_min_size.x)
 	{
 		setValue(_value + 1);
-		_mouse_move = { 0, 0 };
+		_mouse_move.x -= _middle_button_min_size.x;
 	}
 	else if (_mouse_move.x < -_middle_button_min_size.x)
 	{
 		setValue(_value - 1);
-		_mouse_move = { 0, 0 };
+		_mouse_move.x += _middle_button_min_size.x;
 	}
 }

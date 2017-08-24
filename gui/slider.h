@@ -13,7 +13,7 @@ namespace gui
 		virtual void setMinMax(long long min, long long max) = 0;
 
 		virtual long long getNumber() = 0;
-		virtual std::pair<long long, long long> getMInMax() = 0;
+		virtual std::pair<long long, long long> getMinMax() = 0;
 	};
 
 }

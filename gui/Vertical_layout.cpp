@@ -102,6 +102,8 @@ void gui::Vertical_layout::up_date(const sf::Window & window, gui::duration time
 {
 	std::vector<gui::Radio_button*> radio_buttons;
 
+	event.checkFocusedObject();
+
 	for (auto &x : _gui_objects)
 	{
 		if (gui::active_gui_object * object = dynamic_cast<gui::active_gui_object*>(x.second.first))
