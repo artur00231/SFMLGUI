@@ -54,8 +54,6 @@ const sf::Rect<float> gui::Horizontal_slider::getGlobalBounds() const
 	return _frame.getGlobalBounds();
 }
 
-#include <iostream>
-
 void gui::Horizontal_slider::up_date(gui::duration time_elapsed, const Mouse_info & mouse_info)
 {
 	setMiddleButtonPosition(mouse_info);
@@ -350,5 +348,19 @@ void gui::Horizontal_slider::setMiddleButtonPosition(const Mouse_info & mouse_in
 	{
 		setValue(_value - 1);
 		_mouse_move.x += _middle_button_min_size.x;
+	}
+
+	if (isHover())
+	{
+		auto wheel_move = mouse_info.getMouseWheelMove();
+
+		if (wheel_move > 0)
+		{
+			setValue(_value + 1);
+		}
+		else if (wheel_move < 0)
+		{
+			setValue(_value - 1);
+		}
 	}
 }

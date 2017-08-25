@@ -54,8 +54,6 @@ const sf::Rect<float> gui::Vertical_slider::getGlobalBounds() const
 	return _frame.getGlobalBounds();
 }
 
-#include <iostream>
-
 void gui::Vertical_slider::up_date(gui::duration time_elapsed, const Mouse_info & mouse_info)
 {
 	setMiddleButtonPosition(mouse_info);
@@ -339,5 +337,19 @@ void gui::Vertical_slider::setMiddleButtonPosition(const Mouse_info & mouse_info
 	{
 		setValue(_value - 1);
 		_mouse_move.y += _middle_button_min_size.y;
+	}
+
+	if (isHover())
+	{
+		auto wheel_move = mouse_info.getMouseWheelMove();
+
+		if (wheel_move > 0)
+		{
+			setValue(_value + 1);
+		}
+		else if (wheel_move < 0)
+		{
+			setValue(_value - 1);
+		}
 	}
 }
