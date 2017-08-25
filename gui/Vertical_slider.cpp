@@ -12,6 +12,8 @@ gui::Vertical_slider::Vertical_slider(long long max, long long min) : _up{ L'\u0
 	_middle.getBackground().setColor(gray);
 	_middle.getFrame().setThickness(1);
 	_middle.getFrame().setColor(sf::Color::Black);
+
+	setValue(_min);
 }
 
 void gui::Vertical_slider::setSize(const sf::Vector2f & size)
@@ -137,6 +139,37 @@ void gui::Vertical_slider::setValue(long long value)
 		_value = value;
 	}
 
+	if (_value == _min)
+	{
+		auto color = _up.getLabel().getColor();
+		color.a = 95;
+		_up.getLabel().setColor(color);
+
+		color = _down.getLabel().getColor();
+		color.a = 255;
+		_down.getLabel().setColor(color);
+	}
+	else if (_value == _max)
+	{
+		auto color = _down.getLabel().getColor();
+		color.a = 95;
+		_down.getLabel().setColor(color);
+
+		color = _up.getLabel().getColor();
+		color.a = 255;
+		_up.getLabel().setColor(color);
+	}
+	else
+	{
+		auto color = _up.getLabel().getColor();
+		color.a = 255;
+		_up.getLabel().setColor(color);
+
+		color = _down.getLabel().getColor();
+		color.a = 255;
+		_down.getLabel().setColor(color);
+	}
+
 	setPosition(_position);
 }
 
@@ -145,14 +178,7 @@ void gui::Vertical_slider::setMinMax(long long min, long long max)
 	_min = min;
 	_max = max;
 
-	if (_value > _max)
-	{
-		_value = _max;
-	}
-	else if (_value < _min)
-	{
-		_value = _min;
-	}
+	setValue(_value);
 
 	resize();
 }
@@ -200,14 +226,7 @@ void gui::Vertical_slider::resize()
 
 				_max = _min + max_steps;
 
-				if (_value > _max)
-				{
-					_value = _max;
-				}
-				else if (_value < _min)
-				{
-					_value = _min;
-				}
+				setValue(_value);
 			}
 
 			if (max_steps < 2)
@@ -240,31 +259,37 @@ void gui::Vertical_slider::resize()
 
 gui::modifier::Frame_modifier & gui::Vertical_slider::getFrame()
 {
+	_need_resize = true;
 	return _frame;
 }
 
 gui::modifier::Background_modifier & gui::Vertical_slider::getBackground()
 {
+	_need_resize = true;
 	return _background;
 }
 
 gui::modifier::Function_modifier & gui::Vertical_slider::getFunction()
 {
+	_need_resize = true;
 	return _function;
 }
 
 gui::modifier::Button_modifier & gui::Vertical_slider::getUp()
 {
+	_need_resize = true;
 	return _up;
 }
 
 gui::modifier::Button_modifier & gui::Vertical_slider::getDown()
 {
+	_need_resize = true;
 	return _down;
 }
 
 gui::modifier::Button_modifier & gui::Vertical_slider::getMiddle()
 {
+	_need_resize = true;
 	return _middle;
 }
 

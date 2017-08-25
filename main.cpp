@@ -28,8 +28,8 @@ int main()
 
 	gui::Vertical_slider * slider = gui.add(new gui::Vertical_slider{});
 
-	slider->setPosition({ 20, 20 });
-	slider->setSize({ 20, 100 });
+	slider->setPosition({ 20 + 500, 20 });
+	slider->setSize({ 20, 500 });
 	slider->setMinMax(0, 100);
 
 	auto x = slider->getMinMax();
@@ -38,8 +38,8 @@ int main()
 
 	gui::Horizontal_slider * slider_h = gui.add(new gui::Horizontal_slider{});
 
-	slider_h->setPosition({ 100, 20 });
-	slider_h->setSize({ 100, 20 });
+	slider_h->setPosition({ 20, 20 + 500 });
+	slider_h->setSize({ 500, 20 });
 	slider_h->setMinMax(0, 100);
 
 	x = slider_h->getMinMax();
@@ -48,7 +48,7 @@ int main()
 
 
 	sf::RenderTexture target;
-	target.create(100, 100);
+	target.create(500, 500);
 	sf::View view{ { 50, 50 },{ 100, 100 } };
 
 	sf::RectangleShape r{ {150, 150} };
@@ -64,7 +64,7 @@ int main()
 
 	sf::Sprite sprite;
 	sprite.setTexture(target.getTexture());
-	sprite.setPosition({ 100, 100 });
+	sprite.setPosition({ 20, 20 });
 
 	while (window.isOpen())
 	{
@@ -85,7 +85,7 @@ int main()
 		}
 
 
-		view.setCenter({ 50.0f + slider_h->getNumber() * 10, 50.0f + slider->getNumber() * 10 });
+		view.setCenter({ 50.0f + slider_h->getValue() * 2, 50.0f + slider->getValue() * 2 });
 
 		target.clear(sf::Color::White);
 		target.setView(view);
