@@ -137,6 +137,37 @@ void gui::Horizontal_slider::setValue(long long value)
 		_value = value;
 	}
 
+	if (_value == _min)
+	{
+		auto color = _left.getLabel().getColor();
+		color.a = 95;
+		_left.getLabel().setColor(color);
+
+		color = _right.getLabel().getColor();
+		color.a = 255;
+		_right.getLabel().setColor(color);
+	}
+	else if (_value == _max)
+	{
+		auto color = _right.getLabel().getColor();
+		color.a = 95;
+		_right.getLabel().setColor(color);
+
+		color = _left.getLabel().getColor();
+		color.a = 255;
+		_left.getLabel().setColor(color);
+	}
+	else
+	{
+		auto color = _left.getLabel().getColor();
+		color.a = 255;
+		_left.getLabel().setColor(color);
+
+		color = _right.getLabel().getColor();
+		color.a = 255;
+		_right.getLabel().setColor(color);
+	}
+
 	setPosition(_position);
 }
 
@@ -145,14 +176,7 @@ void gui::Horizontal_slider::setMinMax(long long min, long long max)
 	_min = min;
 	_max = max;
 
-	if (_value > _max)
-	{
-		_value = _max;
-	}
-	else if (_value < _min)
-	{
-		_value = _min;
-	}
+	setValue(_value);
 
 	resize();
 }
@@ -200,14 +224,7 @@ void gui::Horizontal_slider::resize()
 				
 				_max = _min + max_steps;
 
-				if (_value > _max)
-				{
-					_value = _max;
-				}
-				else if (_value < _min)
-				{
-					_value = _min;
-				}
+				setValue(_value);
 			}
 
 			if (max_steps < 2)
@@ -240,31 +257,37 @@ void gui::Horizontal_slider::resize()
 
 gui::modifier::Frame_modifier & gui::Horizontal_slider::getFrame()
 {
+	_need_resize = true;
 	return _frame;
 }
 
 gui::modifier::Background_modifier & gui::Horizontal_slider::getBackground()
 {
+	_need_resize = true;
 	return _background;
 }
 
 gui::modifier::Function_modifier & gui::Horizontal_slider::getFunction()
 {
+	_need_resize = true;
 	return _function;
 }
 
 gui::modifier::Button_modifier & gui::Horizontal_slider::getLeft()
 {
+	_need_resize = true;
 	return _left;
 }
 
 gui::modifier::Button_modifier & gui::Horizontal_slider::getRight()
 {
+	_need_resize = true;
 	return _right;
 }
 
 gui::modifier::Button_modifier & gui::Horizontal_slider::getMiddle()
 {
+	_need_resize = true;
 	return _middle;
 }
 
