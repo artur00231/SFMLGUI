@@ -1,7 +1,5 @@
 #include "Image.h"
 
-#include <iostream>
-
 gui::Image::Image(const std::string & path) : ImageImp(path)
 {
 }

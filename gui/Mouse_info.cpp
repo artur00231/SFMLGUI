@@ -31,6 +31,7 @@ void gui::Mouse_info::update()
 	}
 
 	_mouse_move = { 0, 0 };
+	_mouse_wheel_delta = 0;
 }
 
 std::pair<bool, bool> gui::Mouse_info::getButtonState(sf::Mouse::Button button) const
