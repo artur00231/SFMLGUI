@@ -157,7 +157,7 @@ void gui::Vertical_slider::setMinMax(long long min, long long max)
 	resize();
 }
 
-long long gui::Vertical_slider::getNumber()
+long long gui::Vertical_slider::getValue()
 {
 	return _value;
 }

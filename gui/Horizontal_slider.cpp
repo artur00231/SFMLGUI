@@ -157,7 +157,7 @@ void gui::Horizontal_slider::setMinMax(long long min, long long max)
 	resize();
 }
 
-long long gui::Horizontal_slider::getNumber()
+long long gui::Horizontal_slider::getValue()
 {
 	return _value;
 }
