@@ -29,7 +29,7 @@ int main()
 	gui::Vertical_slider * slider = gui.add(new gui::Vertical_slider{});
 
 	slider->setPosition({ 20, 20 });
-	slider->setSize({ 50, 200 });
+	slider->setSize({ 20, 100 });
 	slider->setMinMax(0, 100);
 
 	auto x = slider->getMinMax();
@@ -38,20 +38,33 @@ int main()
 
 	gui::Horizontal_slider * slider_h = gui.add(new gui::Horizontal_slider{});
 
-	slider_h->setPosition({ 400, 20 });
-	slider_h->setSize({ 200, 50 });
+	slider_h->setPosition({ 100, 20 });
+	slider_h->setSize({ 100, 20 });
 	slider_h->setMinMax(0, 100);
 
 	x = slider_h->getMinMax();
 
 	std::cout << x.second - x.first;
 
-	gui::Text_input * text = gui.add(new gui::Text_input);
 
-	text->setPosition({ 200, 20 });
-	text->setSize({ 100, 50 });
-	text->getFrame().setThickness(1);
-	text->getFrame().setColor(sf::Color::Black);
+	sf::RenderTexture target;
+	target.create(100, 100);
+	sf::View view{ { 50, 50 },{ 100, 100 } };
+
+	sf::RectangleShape r{ {150, 150} };
+	r.setPosition({ 10, 10 });
+	r.setFillColor(sf::Color::Red);
+	r.setOutlineColor(sf::Color::Black);
+	r.setOutlineThickness(2);
+
+	target.clear(sf::Color::White);
+	target.setView(view);
+	target.draw(r);
+	target.display();
+
+	sf::Sprite sprite;
+	sprite.setTexture(target.getTexture());
+	sprite.setPosition({ 100, 100 });
 
 	while (window.isOpen())
 	{
@@ -72,9 +85,16 @@ int main()
 		}
 
 
+		view.setCenter({ 50.0f + slider_h->getNumber() * 10, 50.0f + slider->getNumber() * 10 });
+
+		target.clear(sf::Color::White);
+		target.setView(view);
+		target.draw(r);
+		target.display();
 
 		window.clear(sf::Color::Color(200, 200, 200));
 		gui.drawAndUp_date(window);
+		window.draw(sprite);
 		window.display();
 		
 	}

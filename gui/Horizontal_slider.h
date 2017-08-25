@@ -41,7 +41,7 @@ namespace gui
 		void setValue(long long value) override;
 		void setMinMax(long long min, long long max) override;
 
-		long long getNumber() override;
+		long long getValue() override;
 		std::pair<long long, long long> getMinMax() override;
 
 		void resize() override;
