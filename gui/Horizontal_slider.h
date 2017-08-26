@@ -12,6 +12,8 @@ namespace gui
 	public:
 		explicit Horizontal_slider(long long max = 0, long long min = 0);
 
+		Horizontal_slider(const Horizontal_slider&) = default;
+		Horizontal_slider& operator=(const Horizontal_slider&) = default;
 		Horizontal_slider(Horizontal_slider&&) = default;
 		Horizontal_slider& operator=(Horizontal_slider&&) = default;
 

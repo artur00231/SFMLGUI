@@ -61,6 +61,8 @@ namespace gui
 	public:
 		explicit Text_input(const sf::String & text = {});
 
+		Text_input(const Text_input&) = default;
+		Text_input& operator=(const Text_input&) = default;
 		Text_input(Text_input&&) = default;
 		Text_input& operator=(Text_input&&) = default;
 

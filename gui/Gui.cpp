@@ -9,6 +9,11 @@ gui::Gui::Gui(const Text_style & text_style)
 	_last_time = clock.now();
 }
 
+gui::Gui::Gui(Gui && gui) : _gui_objects{std::move(gui._gui_objects)}, _default_text_style{std::move(gui._default_text_style)}, _last_time{std::move(gui._last_time)}, _event{std::move(gui._event)}
+{
+	_mouse_info_pointer = &_event.getMouseInfo();
+}
+
 void gui::Gui::draw(sf::RenderTarget & window) const
 {
 	for (auto &x : _gui_objects)

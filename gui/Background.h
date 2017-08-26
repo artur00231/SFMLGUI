@@ -42,6 +42,8 @@ namespace gui
 	public:
 		Background();
 
+		Background(const Background&) = default;
+		Background& operator=(const Background&) = default;
 		Background(Background&&) = default;
 		Background& operator=(Background&&) = default;
 

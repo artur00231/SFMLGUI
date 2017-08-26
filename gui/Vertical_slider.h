@@ -12,6 +12,8 @@ namespace gui
 	public:
 		explicit Vertical_slider(long long max = 0, long long min = 0);
 
+		Vertical_slider(const Vertical_slider&) = default;
+		Vertical_slider& operator=(const Vertical_slider&) = default;
 		Vertical_slider(Vertical_slider&&) = default;
 		Vertical_slider& operator=(Vertical_slider&&) = default;
 

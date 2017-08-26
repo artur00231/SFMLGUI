@@ -41,6 +41,8 @@ namespace gui
 	public:
 		explicit Frame(float thickness = 0, const sf::Color & color = sf::Color::Transparent);
 
+		Frame(const Frame&) = default;
+		Frame& operator=(const Frame&) = default;
 		Frame(Frame&&) = default;
 		Frame& operator=(Frame&&) = default;
 

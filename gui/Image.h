@@ -47,6 +47,8 @@ namespace gui
 	public:
 		explicit Image(const std::string & path = {});
 
+		Image(const Image&) = default;
+		Image& operator=(const Image&) = default;
 		Image(Image&&) = default;
 		Image& operator=(Image&&) = default;
 
