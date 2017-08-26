@@ -32,8 +32,7 @@ namespace gui
 	public:
 		explicit Gui(const Text_style & text_style);
 
-		Gui(Gui&&) = default;
-		Gui& operator=(Gui&&) = default;
+		Gui(Gui&&);
 
 		gui_object * addObject(gui::gui_object * object, const std::string & name = {}) override;
 		gui_object * addObject(gui::gui_object & object, const std::string & name = {}) override;

@@ -56,6 +56,8 @@ namespace gui
 	public:
 		explicit Button(const sf::String & text = {});
 
+		Button(const Button&) = default;
+		Button& operator=(const Button&) = default;
 		Button(Button&&) = default;
 		Button& operator=(Button&&) = default;
 

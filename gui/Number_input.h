@@ -77,6 +77,8 @@ namespace gui
 	public:
 		explicit Number_input(const sf::String & text = {});
 
+		Number_input(const Number_input&) = default;
+		Number_input& operator=(const Number_input&) = default;
 		Number_input(Number_input&&) = default;
 		Number_input& operator=(Number_input&&) = default;
 		

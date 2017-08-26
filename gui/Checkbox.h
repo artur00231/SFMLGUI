@@ -69,6 +69,8 @@ namespace gui
 	public:
 		explicit Checkbox(const sf::String & text = {});
 
+		Checkbox(const Checkbox&) = default;
+		Checkbox& operator=(const Checkbox&) = default;
 		Checkbox(Checkbox&&) = default;
 		Checkbox& operator=(Checkbox&&) = default;
 

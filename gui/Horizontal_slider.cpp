@@ -320,12 +320,7 @@ void gui::Horizontal_slider::add()
 {
 	if (_right.isClickedChange() && _right.isClicked())
 	{
-		if (++_value > _max)
-		{
-			_value = _max;
-		}
-
-		setPosition(_position);
+		setValue(_value + 1);
 	}
 }
 
@@ -333,12 +328,7 @@ void gui::Horizontal_slider::subtract()
 {
 	if (_left.isClickedChange() && _left.isClicked())
 	{
-		if (--_value < _min)
-		{
-			_value = _min;
-		}
-
-		setPosition(_position);
+		setValue(_value - 1);
 	}
 }
 

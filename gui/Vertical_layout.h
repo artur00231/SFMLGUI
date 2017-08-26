@@ -13,6 +13,8 @@ namespace gui
 	public:
 		Vertical_layout(owner&, const Text_style* = {});
 
+		Vertical_layout(Vertical_layout&&);
+
 		void setSize(const sf::Vector2f&) override;
 		void setPosition(const sf::Vector2f&) override;
 

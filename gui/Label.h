@@ -47,6 +47,8 @@ namespace gui {
 	public:
 		explicit Label(const sf::String& = {}, const Text_style* = {});
 
+		Label(const Label&) = default;
+		Label& operator=(const Label&) = default;
 		Label(Label&&) = default;
 		Label& operator=(Label&&) = default;
 

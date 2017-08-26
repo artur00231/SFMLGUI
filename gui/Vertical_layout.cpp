@@ -12,6 +12,14 @@ gui::Vertical_layout::Vertical_layout(owner & owner, const Text_style * text_sty
 	}
 }
 
+gui::Vertical_layout::Vertical_layout(Vertical_layout && vertical_layout)
+	: _gui_objects{ std::move(vertical_layout._gui_objects) },
+	_default_text_style{ std::move(vertical_layout._default_text_style) },
+	_position{std::move(vertical_layout._position)},
+	_size{ std::move(vertical_layout._size) }
+{
+}
+
 void gui::Vertical_layout::setSize(const sf::Vector2f & size)
 {
 	_size = size;

@@ -68,6 +68,8 @@ namespace gui
 	public:
 		explicit Radio_button(const sf::String & text = {});
 
+		Radio_button(const Radio_button&) = default;
+		Radio_button& operator=(const Radio_button&) = default;
 		Radio_button(Radio_button&&) = default;
 		Radio_button& operator=(Radio_button&&) = default;
 
