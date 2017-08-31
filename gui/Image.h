@@ -64,6 +64,7 @@ namespace gui
 		void draw(sf::RenderTarget & render_target) const override;
 
 		void setOwner(owner & owner) override;
+		void removeFromOwner(owner & owner) override;
 
 		void setTexture(const std::string & path) override;
 		void setTexture(const std::string & path, const sf::Rect<int> & part) override;

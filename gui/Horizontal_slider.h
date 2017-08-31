@@ -7,7 +7,51 @@
 namespace gui
 {
 
-	class Horizontal_slider : public slider
+	namespace modifier
+	{
+		class Horizontal_slider_modifier
+		{
+		public:
+			Horizontal_slider_modifier() = default;
+
+			Horizontal_slider_modifier(Horizontal_slider_modifier&&) = default;
+			Horizontal_slider_modifier& operator=(Horizontal_slider_modifier&&) = default;
+
+			virtual bool isActive() const = 0;
+			virtual bool isHover() const = 0;
+			virtual bool isClicked() const = 0;
+			virtual bool isFocused() const = 0;
+			virtual bool isHoverChange() const = 0;
+			virtual bool isClickedChange() const = 0;
+			virtual bool isNeedResize() const = 0;
+
+			virtual void setActive(bool active) = 0;
+			virtual void setFocus(bool focus) = 0;
+
+			virtual void setValue(long long value) = 0;
+			virtual void setMinMax(long long min, long long max) = 0;
+
+			virtual long long getValue() const = 0;
+			virtual std::pair<long long, long long> getMinMax() const = 0;
+			virtual long long getMax() const = 0;
+
+
+			virtual modifier::Frame_modifier& getFrame() = 0;
+			virtual modifier::Background_modifier& getBackground() = 0;
+			virtual modifier::Function_modifier& getFunction() = 0;
+
+			virtual modifier::Button_modifier& getLeft() = 0;
+			virtual modifier::Button_modifier& getRight() = 0;
+			virtual modifier::Button_modifier& getMiddle() = 0;
+
+			Horizontal_slider_modifier(const Horizontal_slider_modifier&) = delete;
+			Horizontal_slider_modifier& operator=(const Horizontal_slider_modifier&) = delete;
+
+			virtual ~Horizontal_slider_modifier() {};
+		};
+	}
+
+	class Horizontal_slider : public slider, public modifier::Horizontal_slider_modifier
 	{
 	public:
 		explicit Horizontal_slider(long long max = 0, long long min = 0);
@@ -28,6 +72,7 @@ namespace gui
 		void draw(sf::RenderTarget & render_target) const override;
 
 		void setOwner(owner & owner) override;
+		void removeFromOwner(owner & owner) override;
 
 		bool isActive() const override;
 		bool isHover() const override;
@@ -43,18 +88,19 @@ namespace gui
 		void setValue(long long value) override;
 		void setMinMax(long long min, long long max) override;
 
-		long long getValue() override;
-		std::pair<long long, long long> getMinMax() override;
+		long long getValue() const override;
+		std::pair<long long, long long> getMinMax() const override;
+		long long getMax() const override;
 
 		void resize() override;
 
-		modifier::Frame_modifier& getFrame();
-		modifier::Background_modifier& getBackground();
-		modifier::Function_modifier& getFunction();
+		modifier::Frame_modifier& getFrame() override;
+		modifier::Background_modifier& getBackground() override;
+		modifier::Function_modifier& getFunction() override;
 
-		modifier::Button_modifier& getLeft();
-		modifier::Button_modifier& getRight();
-		modifier::Button_modifier& getMiddle();
+		modifier::Button_modifier& getLeft() override;
+		modifier::Button_modifier& getRight() override;
+		modifier::Button_modifier& getMiddle() override;
 
 		~Horizontal_slider() {};
 

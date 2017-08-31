@@ -1,6 +1,6 @@
 #include "Vertical_layout.h"
 
-gui::Vertical_layout::Vertical_layout(owner & owner, const Text_style * text_style)
+gui::Vertical_layout::Vertical_layout(owner & owner, const Text_style * text_style) : _owner{ &owner }
 {
 	if (text_style)
 	{
@@ -16,18 +16,23 @@ gui::Vertical_layout::Vertical_layout(Vertical_layout && vertical_layout)
 	: _gui_objects{ std::move(vertical_layout._gui_objects) },
 	_default_text_style{ std::move(vertical_layout._default_text_style) },
 	_position{std::move(vertical_layout._position)},
-	_size{ std::move(vertical_layout._size) }
+	_size{ std::move(vertical_layout._size) },
+	_owner{ vertical_layout._owner }
 {
 }
 
 void gui::Vertical_layout::setSize(const sf::Vector2f & size)
 {
 	_size = size;
+
+	re_size();
 }
 
 void gui::Vertical_layout::setPosition(const sf::Vector2f & position)
 {
 	_position = position;
+
+	re_size();
 }
 
 const sf::Vector2f & gui::Vertical_layout::getSize() const
@@ -50,6 +55,11 @@ void gui::Vertical_layout::setOwner(owner & owner)
 	_default_text_style = owner.getTextStyle();
 }
 
+void gui::Vertical_layout::removeFromOwner(owner & owner)
+{
+	// Do nothing
+}
+
 void gui::Vertical_layout::draw(sf::RenderTarget & window) const
 {
 	for (auto &x : _gui_objects)
@@ -70,6 +80,15 @@ gui::gui_object * gui::Vertical_layout::addObject(gui::gui_object & object, cons
 
 void gui::Vertical_layout::remove(const std::string & name)
 {
+	auto to_erase = _gui_objects[name];
+
+	to_erase.first->removeFromOwner(*this);
+
+	if (to_erase.second.first)
+	{
+		delete to_erase.first;
+	}
+
 	_gui_objects.erase(name);
 
 	re_size();
@@ -90,6 +109,8 @@ void gui::Vertical_layout::remove(const gui::gui_object * object)
 
 	if (poz != _gui_objects.end())
 	{
+		poz->second.first->removeFromOwner(*this);
+
 		if (poz->second.second.first)
 		{
 			delete poz->second.first;
@@ -101,16 +122,29 @@ void gui::Vertical_layout::remove(const gui::gui_object * object)
 	re_size();
 }
 
+void gui::Vertical_layout::getEvents(active_gui_object & object, const sf::Window & window)
+{
+	_owner->getEvents(object, window);
+}
+
+void gui::Vertical_layout::getEvents(active_gui_object & object, const sf::Window & window, const sf::Rect<float>& rect)
+{
+	_owner->getEvents(object, window, rect);
+}
+
+gui::Mouse_info & gui::Vertical_layout::getMouseInfo() const
+{
+	return _owner->getMouseInfo();
+}
+
 gui::gui_object * gui::Vertical_layout::get(const std::string & name) const
 {
 	return _gui_objects.at(name).first;
 }
 
-void gui::Vertical_layout::up_date(const sf::Window & window, gui::duration time_elapsed, Event & event)
+void gui::Vertical_layout::up_date(const sf::Window & window, gui::duration time_elapsed, owner & owner)
 {
 	std::vector<gui::Radio_button*> radio_buttons;
-
-	event.checkFocusedObject();
 
 	for (auto &x : _gui_objects)
 	{
@@ -129,12 +163,12 @@ void gui::Vertical_layout::up_date(const sf::Window & window, gui::duration time
 				}
 			}
 
-			event.getEvents(*object, window);
-			object->up_date(std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed), event.getMouseInfo());
+			owner.getEvents(*object, window);
+			object->up_date(std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed), owner.getMouseInfo());
 		}
 		else if (gui::managing_gui_object * managing_object = dynamic_cast<gui::managing_gui_object*>(x.second.first))
 		{
-			managing_object->up_date(window, std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed), event);
+			managing_object->up_date(window, std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed), owner);
 		}
 	}
 
@@ -168,7 +202,7 @@ void gui::Vertical_layout::re_size()
 
 	for (auto x : layout_objects)
 	{
-		x->setSize({ _size.y, objects_height });
+		x->setSize({ _size.x, objects_height });
 		x->setPosition({ _position.x, objects_position_y });
 		objects_position_y += objects_height;
 	}

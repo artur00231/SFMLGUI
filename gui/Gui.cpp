@@ -34,6 +34,15 @@ gui::gui_object * gui::Gui::addObject(gui::gui_object & object, const std::strin
 
 void gui::Gui::remove(const std::string & name)
 {
+	auto to_erase = _gui_objects[name];
+
+	to_erase.first->removeFromOwner(*this);
+
+	if (to_erase.second)
+	{
+		delete to_erase.first;
+	}
+
 	_gui_objects.erase(name);
 }
 
@@ -53,6 +62,8 @@ void gui::Gui::remove(const gui::gui_object * object)
 
 	if (poz != _gui_objects.end())
 	{
+		poz->second.first->removeFromOwner(*this);
+
 		if (poz->second.second)
 		{
 			delete poz->second.first;
@@ -60,6 +71,21 @@ void gui::Gui::remove(const gui::gui_object * object)
 
 		_gui_objects.erase(poz);
 	}
+}
+
+void gui::Gui::getEvents(active_gui_object & object, const sf::Window & window)
+{
+	_event.getEvents(object, window);
+}
+
+void gui::Gui::getEvents(active_gui_object & object, const sf::Window & window, const sf::Rect<float>& rect)
+{
+	_event.getEvents(object, window, rect);
+}
+
+gui::Mouse_info & gui::Gui::getMouseInfo() const
+{
+	return *_mouse_info_pointer;
 }
 
 gui::gui_object * gui::Gui::get(const std::string & name) const
@@ -97,7 +123,7 @@ void gui::Gui::up_date(const sf::Window & window)
 		}
 		else if (gui::managing_gui_object * managing_object = dynamic_cast<gui::managing_gui_object*>(x.second.first))
 		{
-			managing_object->up_date(window, std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed), _event);
+			managing_object->up_date(window, std::chrono::duration_cast<std::chrono::microseconds>(time_elapsed), *this);
 		}
 	}
 

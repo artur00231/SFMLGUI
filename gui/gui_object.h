@@ -20,6 +20,7 @@ namespace gui {
 		virtual void draw(sf::RenderTarget & render_target) const = 0;
 
 		virtual void setOwner(owner & owner) = 0;
+		virtual void removeFromOwner(owner & owner) = 0;
 
 		virtual ~gui_object() {};
 

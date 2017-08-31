@@ -70,6 +70,11 @@ void gui::Background::setOwner(gui::owner&)
 	// Do nothing
 }
 
+void gui::Background::removeFromOwner(owner & owner)
+{
+	// Do nothing
+}
+
 void gui::Background::setBackground_type(Background_type background_type)
 {
 	if (background_type == Background_type::COLOR)

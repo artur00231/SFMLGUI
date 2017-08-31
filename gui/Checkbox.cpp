@@ -78,6 +78,11 @@ void gui::Checkbox::setOwner(gui::owner & owner)
 	_label.setTextStyle(owner.getTextStyle());
 }
 
+void gui::Checkbox::removeFromOwner(owner & owner)
+{
+	// Do nothing
+}
+
 bool gui::Checkbox::isActive() const
 {
 	return _active;

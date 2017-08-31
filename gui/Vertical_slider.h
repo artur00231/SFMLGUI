@@ -6,8 +6,51 @@
 
 namespace gui
 {
+	namespace modifier
+	{
+		class Vertical_slider_modifier
+		{
+		public:
+			Vertical_slider_modifier() = default;
 
-	class Vertical_slider : public slider
+			Vertical_slider_modifier(Vertical_slider_modifier&&) = default;
+			Vertical_slider_modifier& operator=(Vertical_slider_modifier&&) = default;
+
+			virtual bool isActive() const = 0;
+			virtual bool isHover() const = 0;
+			virtual bool isClicked() const = 0;
+			virtual bool isFocused() const = 0;
+			virtual bool isHoverChange() const = 0;
+			virtual bool isClickedChange() const = 0;
+			virtual bool isNeedResize() const = 0;
+
+			virtual void setActive(bool active) = 0;
+			virtual void setFocus(bool focus) = 0;
+
+			virtual void setValue(long long value) = 0;
+			virtual void setMinMax(long long min, long long max) = 0;
+
+			virtual long long getValue() const = 0;
+			virtual std::pair<long long, long long> getMinMax() const = 0;
+			virtual long long getMax() const = 0;
+
+
+			virtual modifier::Frame_modifier& getFrame() = 0;
+			virtual modifier::Background_modifier& getBackground() = 0;
+			virtual modifier::Function_modifier& getFunction() = 0;
+
+			virtual modifier::Button_modifier& getUp() = 0;
+			virtual modifier::Button_modifier& getDown() = 0;
+			virtual modifier::Button_modifier& getMiddle() = 0;
+
+			Vertical_slider_modifier(const Vertical_slider_modifier&) = delete;
+			Vertical_slider_modifier& operator=(const Vertical_slider_modifier&) = delete;
+
+			virtual ~Vertical_slider_modifier() {};
+		};
+	}
+
+	class Vertical_slider : public slider, public modifier::Vertical_slider_modifier
 	{
 	public:
 		explicit Vertical_slider(long long max = 0, long long min = 0);
@@ -28,6 +71,7 @@ namespace gui
 		void draw(sf::RenderTarget & render_target) const override;
 
 		void setOwner(owner & owner) override;
+		void removeFromOwner(owner & owner) override;
 
 		bool isActive() const override;
 		bool isHover() const override;
@@ -43,18 +87,19 @@ namespace gui
 		void setValue(long long value) override;
 		void setMinMax(long long min, long long max) override;
 
-		long long getValue() override;
-		std::pair<long long, long long> getMinMax() override;
+		long long getValue() const override;
+		std::pair<long long, long long> getMinMax() const override;
+		long long getMax() const override;
 
 		void resize() override;
 
-		modifier::Frame_modifier& getFrame();
-		modifier::Background_modifier& getBackground();
-		modifier::Function_modifier& getFunction();
+		modifier::Frame_modifier& getFrame() override;
+		modifier::Background_modifier& getBackground() override;
+		modifier::Function_modifier& getFunction() override;
 
-		modifier::Button_modifier& getUp();
-		modifier::Button_modifier& getDown();
-		modifier::Button_modifier& getMiddle();
+		modifier::Button_modifier& getUp() override;
+		modifier::Button_modifier& getDown() override;
+		modifier::Button_modifier& getMiddle() override;
 
 		~Vertical_slider() {};
 

@@ -45,6 +45,10 @@ namespace gui
 		void remove(const std::string & name) override;
 		void remove(const gui::gui_object * object) override;
 
+		void getEvents(active_gui_object & object, const sf::Window & window) override;
+		void getEvents(active_gui_object & object, const sf::Window & window, const sf::Rect<float> & rect) override;
+		Mouse_info& getMouseInfo() const override;
+
 		void draw(sf::RenderTarget & render_target) const;
 		void up_date(const sf::Window & window);
 		void drawAndUp_date(sf::RenderTarget & render_target, const sf::Window & window);

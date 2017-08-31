@@ -49,6 +49,11 @@ void gui::Image::setOwner(owner &)
 	// Do nothing
 }
 
+void gui::Image::removeFromOwner(owner & owner)
+{
+	// Do nothing
+}
+
 void gui::Image::setTexture(const std::string & path)
 {
 	ImageImp::setTexture(path);

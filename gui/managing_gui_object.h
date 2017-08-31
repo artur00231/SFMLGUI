@@ -4,6 +4,7 @@
 #include "gui_object.h"
 #include "owner.h"
 #include "Event.h"
+#include "Mouse_info.h"
 
 namespace gui
 {
@@ -13,7 +14,7 @@ namespace gui
 	class managing_gui_object : public gui_object, public owner
 	{
 	public:
-		virtual void up_date(const sf::Window & window, duration time_elapsed, Event & evet) = 0;
+		virtual void up_date(const sf::Window & window, duration time_elapsed, owner & owner) = 0;
 
 		virtual void setTextStyle(const Text_style & text_style) = 0;
 

@@ -77,6 +77,13 @@ void gui::Horizontal_slider::setOwner(owner & owner)
 	owner.addObject(_middle);
 }
 
+void gui::Horizontal_slider::removeFromOwner(owner & owner)
+{
+	owner.remove(&_left);
+	owner.remove(&_right);
+	owner.remove(&_middle);
+}
+
 bool gui::Horizontal_slider::isActive() const
 {
 	return _active;
@@ -181,12 +188,20 @@ void gui::Horizontal_slider::setMinMax(long long min, long long max)
 	resize();
 }
 
-long long gui::Horizontal_slider::getValue()
+long long gui::Horizontal_slider::getMax() const
+{
+	float middle_size_x = _size.x - 2 * _frame.getThickness() - 2 * _button_min_size.x;
+	long long max_steps = static_cast<long long>(std::floor(middle_size_x / _middle_button_min_size.x)) - 1;
+
+	return max_steps;
+}
+
+long long gui::Horizontal_slider::getValue() const
 {
 	return _value;
 }
 
-std::pair<long long, long long> gui::Horizontal_slider::getMinMax()
+std::pair<long long, long long> gui::Horizontal_slider::getMinMax() const
 {
 	return std::pair<long long, long long>{ _min, _max };
 }

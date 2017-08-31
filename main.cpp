@@ -4,6 +4,8 @@
 
 #include "SFML\Network.hpp"
 
+#include "gui\Scroll_area.h"
+
 #include "gui\Gui.h"
 
 sf::Vector2f to_float_vector(sf::Vector2i & a)
@@ -25,7 +27,7 @@ int main()
 	gui::Text_style s{ "fonts\\arial.ttf", 20, sf::Color::Black };
 
 	gui::Gui gui(s);
-
+	/*
 	gui::Vertical_slider * slider = gui.add(new gui::Vertical_slider{});
 
 	slider->setPosition({ 20 + 500, 20 });
@@ -65,6 +67,33 @@ int main()
 	sf::Sprite sprite;
 	sprite.setTexture(target.getTexture());
 	sprite.setPosition({ 20, 20 });
+	*/
+
+	gui::Scroll_area * scroll = gui.add(new gui::Scroll_area{ gui });
+
+	gui::Vertical_layout * l = scroll->add(new gui::Vertical_layout{ *scroll });
+
+	scroll->setSize({ 200, 200 });
+	scroll->setPosition({ 20, 20 });
+	scroll->setScrollAreaSize({ 300, 300 });
+
+	l->setSize({ 100, 300 });
+	l->setPosition({ 0, 0 });
+
+	gui::Radio_button * r = l->add(new gui::Radio_button{ "1" });
+	r->setSize({ 100, 100 });
+	r = scroll->add(new gui::Radio_button{ "2" });
+	r->setPosition({ 100, 0 });
+	r->setSize({ 100, 100 });
+	r = l->add(new gui::Radio_button{ "3" });
+	r->setSize({ 100, 100 });
+	r = l->add(new gui::Radio_button{ "4" });
+	r->setSize({ 100, 100 });
+	r = scroll->add(new gui::Radio_button{ "5" });
+	r->setPosition({ 200, 0 });
+	r->setSize({ 100, 100 });
+
+
 
 	while (window.isOpen())
 	{
@@ -84,17 +113,8 @@ int main()
 
 		}
 
-
-		view.setCenter({ 50.0f + slider_h->getValue() * 2, 50.0f + slider->getValue() * 2 });
-
-		target.clear(sf::Color::White);
-		target.setView(view);
-		target.draw(r);
-		target.display();
-
 		window.clear(sf::Color::Color(200, 200, 200));
 		gui.drawAndUp_date(window);
-		window.draw(sprite);
 		window.display();
 		
 	}
