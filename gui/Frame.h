@@ -58,6 +58,7 @@ namespace gui
 		void draw(sf::RenderTarget & render_target) const override;
 
 		void setOwner(owner & owner) override;
+		void removeFromOwner(owner & owner) override;
 
 		void setThickness(float thickness) override;
 		float getThickness() const override;

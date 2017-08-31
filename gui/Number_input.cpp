@@ -98,6 +98,12 @@ void gui::Number_input::setOwner(gui::owner & owner)
 	_label.setTextStyle(owner_text_style);
 }
 
+void gui::Number_input::removeFromOwner(owner & owner)
+{
+	owner.remove(&_up);
+	owner.remove(&_down);
+}
+
 bool gui::Number_input::isActive() const
 {
 	return _active;

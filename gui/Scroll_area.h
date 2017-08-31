@@ -1,19 +1,19 @@
-#ifndef GUI_VERTICAL_LAYOUT_H
-#define GUI_VERTICAL_LAYOUT_H
+#ifndef GUI_SCROLL_AREA_H
+#define GUI_SCROLL_AREA_H
 
 #include "managing_gui_object.h"
 #include "Radio_button.h"
+#include "Horizontal_slider.h"
+#include "Vertical_slider.h"
 #include <unordered_map>
 
 namespace gui
 {
 
-	class Vertical_layout : public managing_gui_object
+	class Scroll_area : public managing_gui_object
 	{
 	public:
-		Vertical_layout(owner&, const Text_style* = {});
-
-		Vertical_layout(Vertical_layout&&);
+		Scroll_area(owner&, const Text_style* = {});
 
 		void setSize(const sf::Vector2f&) override;
 		void setPosition(const sf::Vector2f&) override;
@@ -44,29 +44,55 @@ namespace gui
 		void up_date(const sf::Window&, duration, owner&) override;
 
 		void setTextStyle(const Text_style&) override;
+		void setSliders(bool horizontal, bool vertical);
+		void setScrollAreaSize(sf::Vector2f size);
+		void setClearColor(const sf::Color & color);
 
 		const Text_style& getTextStyle() const override;
 		gui::gui_object* get(const std::string&) const override;
+		std::pair<bool, bool> getSliders() const;
+		sf::Vector2f getMaxSize() const;
+		sf::Vector2f getScrollAreaSize() const;
+		const sf::Color& setClearColor() const;
 
-		Vertical_layout(const Vertical_layout&) = delete;
-		Vertical_layout& operator=(const Vertical_layout&) = delete;
+		modifier::Horizontal_slider_modifier& getHorizontal_slider();
+		modifier::Vertical_slider_modifier& getVertical_slider();
 
-		void re_size();
+		Scroll_area(const Scroll_area&) = delete;
+		Scroll_area& operator=(const Scroll_area&) = delete;
 
-		~Vertical_layout();
+		void resize(sf::Vector2f size);
+
+		~Scroll_area();
 
 	protected:
 		void checkRadio_buttons(std::vector<gui::Radio_button*>&);
 		std::string getUniqeName();
+		void drawAll();
+		sf::Rect<float> getRealGlobalBounds(const gui_object * object);
+		sf::Rect<float> getRealGlobalBounds(const sf::Rect<float> & rect);
 
-		gui::gui_object * addToMap(gui::gui_object*, const std::string&, bool addToLayout);
-		gui::gui_object * addToMap(gui::gui_object&, const std::string&, bool addToLayout);
+		gui::gui_object * addToMap(gui::gui_object*, const std::string&);
+		gui::gui_object * addToMap(gui::gui_object&, const std::string&);
 
 	private:
-		std::unordered_map<std::string, std::pair<gui::gui_object*, std::pair<bool, bool>>> _gui_objects;
+		std::unordered_map<std::string, std::pair<gui::gui_object*, bool>> _gui_objects;
 		long long _uniqe_name_count = 0;
 		Text_style _default_text_style;
 		sf::Vector2f _position, _size;
+		std::unique_ptr<sf::RenderTexture> _texture;
+		sf::View _view;
+		sf::Sprite _sprite;
+		Horizontal_slider _h_slider;
+		Vertical_slider _v_slider;
+		sf::RectangleShape _rectangle;
+		sf::Rect<float> _scroll_area_rect;
+		sf::Color _clear_color;
+
+		bool _need_resize, _v_slider_use = true, _h_slider_use = true;
+		float _step = 10;
+
+		long long _v_slider_value, _h_slider_value;
 
 		owner * _owner;
 	};
@@ -74,17 +100,17 @@ namespace gui
 }
 
 template<typename T>
-inline T* gui::Vertical_layout::add(T* object, const std::string & name)
+inline T* gui::Scroll_area::add(T* object, const std::string & name)
 {
 	static_assert(std::is_convertible<T*, gui::gui_object*>::value, "Can not convertible argument");
-	return static_cast<T*>(addToMap(object, name, true));
+	return static_cast<T*>(addToMap(object, name));
 }
 
 template<typename T>
-inline T* gui::Vertical_layout::add(T& object, const std::string & name)
+inline T* gui::Scroll_area::add(T& object, const std::string & name)
 {
 	static_assert(std::is_convertible<T*, gui::gui_object*>::value, "Can not convertible argument");
-	return static_cast<T*>(addToMap(object, name, true));
+	return static_cast<T*>(addToMap(object, name));
 }
 
-#endif // !GUI_VERTICAL_LAYOUT_H
+#endif // !GUI_SCROLL_AREA_H

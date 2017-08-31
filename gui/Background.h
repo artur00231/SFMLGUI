@@ -59,6 +59,7 @@ namespace gui
 		void draw(sf::RenderTarget & render_target) const override;
 
 		void setOwner(owner & owner) override;
+		void removeFromOwner(owner & owner) override;
 
 		void setBackground_type(Background_type background_type) override;
 		void setImage(Image * image) override;

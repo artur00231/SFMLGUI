@@ -49,6 +49,11 @@ void gui::Frame::setOwner(owner &)
 	// Do nothing
 }
 
+void gui::Frame::removeFromOwner(owner & owner)
+{
+	// Do nothing
+}
+
 void gui::Frame::fitTo(const gui_object & object)
 {
 	FrameImp::fitTo(object);

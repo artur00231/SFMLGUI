@@ -64,6 +64,7 @@ namespace gui {
 		void draw(sf::RenderTarget & render_target) const override;
 
 		void setOwner(owner & owner) override;
+		void removeFromOwner(owner & owner) override;
 
 		bool setFont(const std::string & path) override;
 		void setCharacterSize(unsigned int size) override;

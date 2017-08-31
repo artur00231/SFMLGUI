@@ -79,6 +79,13 @@ void gui::Vertical_slider::setOwner(owner & owner)
 	owner.addObject(_middle);
 }
 
+void gui::Vertical_slider::removeFromOwner(owner & owner)
+{
+	owner.remove(&_up);
+	owner.remove(&_down);
+	owner.remove(&_middle);
+}
+
 bool gui::Vertical_slider::isActive() const
 {
 	return _active;
@@ -183,12 +190,20 @@ void gui::Vertical_slider::setMinMax(long long min, long long max)
 	resize();
 }
 
-long long gui::Vertical_slider::getValue()
+long long gui::Vertical_slider::getMax() const
+{
+	float middle_size_y = _size.y - 2 * _frame.getThickness() - 2 * _button_min_size.y;
+	long long max_steps = static_cast<long long>(std::floor(middle_size_y / _middle_button_min_size.y)) - 1;
+
+	return max_steps;
+}
+
+long long gui::Vertical_slider::getValue() const
 {
 	return _value;
 }
 
-std::pair<long long, long long> gui::Vertical_slider::getMinMax()
+std::pair<long long, long long> gui::Vertical_slider::getMinMax() const
 {
 	return std::pair<long long, long long>{ _min, _max };
 }
@@ -370,11 +385,11 @@ void gui::Vertical_slider::setMiddleButtonPosition(const Mouse_info & mouse_info
 
 		if (wheel_move > 0)
 		{
-			setValue(_value + 1);
+			setValue(_value - 1);
 		}
 		else if (wheel_move < 0)
 		{
-			setValue(_value - 1);
+			setValue(_value + 1);
 		}
 	}
 }

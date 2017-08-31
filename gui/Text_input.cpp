@@ -75,6 +75,11 @@ void gui::Text_input::setOwner(gui::owner & owner)
 	_label.setTextStyle(owner.getTextStyle());
 }
 
+void gui::Text_input::removeFromOwner(owner & owner)
+{
+	// Do nothing
+}
+
 bool gui::Text_input::isActive() const
 {
 	return _active;

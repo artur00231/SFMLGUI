@@ -49,6 +49,11 @@ void gui::Label::setOwner(gui::owner & owner)
 	setTextStyle(owner.getTextStyle());
 }
 
+void gui::Label::removeFromOwner(owner & owner)
+{
+	// Do nothing
+}
+
 bool gui::Label::setFont(const std::string & font_path)
 {
 	return LabelImp::setFont(font_path);

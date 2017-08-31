@@ -82,6 +82,11 @@ void gui::Radio_button::setOwner(gui::owner & owner)
 	_label.setTextStyle(owner.getTextStyle());
 }
 
+void gui::Radio_button::removeFromOwner(owner & owner)
+{
+	// Do nothing
+}
+
 bool gui::Radio_button::isActive() const
 {
 	return _active;

@@ -44,6 +44,11 @@ void gui::Event::clear()
 
 void gui::Event::getEvents(active_gui_object & object, const sf::Window & window)
 {
+	getEvents(object, window, object.getGlobalBounds());
+}
+
+void gui::Event::getEvents(active_gui_object & object, const sf::Window & window, const sf::Rect<float> & rect)
+{
 	if (!object.isActive())
 	{
 		return;
@@ -66,7 +71,7 @@ void gui::Event::getEvents(active_gui_object & object, const sf::Window & window
 	object.setHoverChange(false);
 	object.setClickedChange(false);
 
-	if (object.getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window))))
+	if (rect.contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window))))
 	{
 		if (!object.isHover())
 		{

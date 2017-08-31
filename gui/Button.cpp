@@ -54,6 +54,11 @@ void gui::Button::setOwner(gui::owner & owner)
 	_label.setTextStyle(owner.getTextStyle());
 }
 
+void gui::Button::removeFromOwner(owner & owner)
+{
+	//Do nothing
+}
+
 bool gui::Button::isActive() const
 {
 	return _active;
