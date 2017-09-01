@@ -175,6 +175,17 @@ void gui::Horizontal_slider::setValue(long long value)
 		_right.getLabel().setColor(color);
 	}
 
+	if (_value == _min && _value == _max)
+	{
+		auto color = _right.getLabel().getColor();
+		color.a = 95;
+		_right.getLabel().setColor(color);
+
+		color = _left.getLabel().getColor();
+		color.a = 95;
+		_left.getLabel().setColor(color);
+	}
+
 	setPosition(_position);
 }
 

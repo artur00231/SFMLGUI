@@ -177,6 +177,17 @@ void gui::Vertical_slider::setValue(long long value)
 		_down.getLabel().setColor(color);
 	}
 
+	if (_value == _min && _value == _max)
+	{
+		auto color = _down.getLabel().getColor();
+		color.a = 95;
+		_down.getLabel().setColor(color);
+
+		color = _up.getLabel().getColor();
+		color.a = 95;
+		_up.getLabel().setColor(color);
+	}
+
 	setPosition(_position);
 }
 

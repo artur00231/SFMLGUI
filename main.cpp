@@ -13,6 +13,16 @@ sf::Vector2f to_float_vector(sf::Vector2i & a)
 	return sf::Vector2f(static_cast<float>(a.x), static_cast<float>(a.y));
 }
 
+void foo(gui::gui_object * object, gui::Button * b)
+{
+	auto button = static_cast<gui::Button*>(object);
+
+	if (button->isClicked() && button->isClickedChange())
+	{
+		b->getLabel().setString(button->getLabel().getString());
+	}
+}
+
 int main()
 {
 	int heigth = 720;
@@ -27,73 +37,35 @@ int main()
 	gui::Text_style s{ "fonts\\arial.ttf", 20, sf::Color::Black };
 
 	gui::Gui gui(s);
-	/*
-	gui::Vertical_slider * slider = gui.add(new gui::Vertical_slider{});
+	
+	gui::Button * main_button = gui.add(new gui::Button{ "1" });
+	main_button->setPosition({ 0, 0 });
+	main_button->setSize({ 100, 50 });
+	main_button->getBackground().setColor(sf::Color::Yellow);
 
-	slider->setPosition({ 20 + 500, 20 });
-	slider->setSize({ 20, 500 });
-	slider->setMinMax(0, 100);
+	gui::Button * button = gui.add(new gui::Button{ L"\u02C5" });
+	button->setPosition({ 100, 0 });
+	button->setSize({ 20, 50 });
+	button->getBackground().setColor(sf::Color::Yellow);
 
-	auto x = slider->getMinMax();
+	gui::Scroll_area * area = gui.add(new gui::Scroll_area{ gui });
+	area->setSliders(false, true);
+	area->setSize({ 120, 100 });
+	area->setScrollAreaSize({ 120, 200 });
+	area->setPosition({ 0, 50 });
 
-	std::cout << x.second - x.first << std::endl;
+	gui::Vertical_layout * layout = area->add(new gui::Vertical_layout{ *area });
+	layout->setPosition({ 0, 0 });
+	layout->setSize({ 100, 200 });
 
-	gui::Horizontal_slider * slider_h = gui.add(new gui::Horizontal_slider{});
-
-	slider_h->setPosition({ 20, 20 + 500 });
-	slider_h->setSize({ 500, 20 });
-	slider_h->setMinMax(0, 100);
-
-	x = slider_h->getMinMax();
-
-	std::cout << x.second - x.first;
-
-
-	sf::RenderTexture target;
-	target.create(500, 500);
-	sf::View view{ { 50, 50 },{ 100, 100 } };
-
-	sf::RectangleShape r{ {150, 150} };
-	r.setPosition({ 10, 10 });
-	r.setFillColor(sf::Color::Red);
-	r.setOutlineColor(sf::Color::Black);
-	r.setOutlineThickness(2);
-
-	target.clear(sf::Color::White);
-	target.setView(view);
-	target.draw(r);
-	target.display();
-
-	sf::Sprite sprite;
-	sprite.setTexture(target.getTexture());
-	sprite.setPosition({ 20, 20 });
-	*/
-
-	gui::Scroll_area * scroll = gui.add(new gui::Scroll_area{ gui });
-
-	gui::Vertical_layout * l = scroll->add(new gui::Vertical_layout{ *scroll });
-
-	scroll->setSize({ 200, 200 });
-	scroll->setPosition({ 20, 20 });
-	scroll->setScrollAreaSize({ 300, 300 });
-
-	l->setSize({ 100, 300 });
-	l->setPosition({ 0, 0 });
-
-	gui::Radio_button * r = l->add(new gui::Radio_button{ "1" });
-	r->setSize({ 100, 100 });
-	r = scroll->add(new gui::Radio_button{ "2" });
-	r->setPosition({ 100, 0 });
-	r->setSize({ 100, 100 });
-	r = l->add(new gui::Radio_button{ "3" });
-	r->setSize({ 100, 100 });
-	r = l->add(new gui::Radio_button{ "4" });
-	r->setSize({ 100, 100 });
-	r = scroll->add(new gui::Radio_button{ "5" });
-	r->setPosition({ 200, 0 });
-	r->setSize({ 100, 100 });
-
-
+	button = layout->add(new gui::Button{ "1" });
+	button->getFunction().set([main_button](gui::gui_object*obj) {foo(obj, main_button); });
+	button = layout->add(new gui::Button{ "2" });
+	button->getFunction().set([main_button](gui::gui_object*obj) {foo(obj, main_button); });
+	button = layout->add(new gui::Button{ "3" });
+	button->getFunction().set([main_button](gui::gui_object*obj) {foo(obj, main_button); });
+	button = layout->add(new gui::Button{ "4" });
+	button->getFunction().set([main_button](gui::gui_object*obj) {foo(obj, main_button); });
 
 	while (window.isOpen())
 	{

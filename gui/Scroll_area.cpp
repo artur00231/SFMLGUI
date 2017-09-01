@@ -32,9 +32,6 @@ void gui::Scroll_area::setPosition(const sf::Vector2f & position)
 {
 	_position = position;
 
-	_scroll_area_rect.left = position.x + _h_slider.getValue() * _step;
-	_scroll_area_rect.top = position.y + _v_slider.getValue() * _step;
-
 	_sprite.setPosition(position);
 
 	sf::Rect<float> scroll_area{ _position, (_texture ? static_cast<sf::Vector2f>(_texture->getSize()) : sf::Vector2f{0, 0}) };
@@ -192,8 +189,8 @@ sf::Vector2f gui::Scroll_area::getMaxSize() const
 sf::Vector2f gui::Scroll_area::getScrollAreaSize() const
 {
 	sf::Vector2f size;
-	size.x = static_cast<float>(_h_slider.getValue()) * _step + size.x;
-	size.y = static_cast<float>(_v_slider.getValue()) * _step + size.y;
+	size.x = static_cast<float>(_h_slider.getMinMax().second) * _step + size.x;
+	size.y = static_cast<float>(_v_slider.getMinMax().second) * _step + size.y;
 
 	return size;
 }
@@ -344,9 +341,14 @@ void gui::Scroll_area::setScrollAreaSize(sf::Vector2f size)
 {
 	auto max_size = getMaxSize();
 
-	if (size.x < _size.x || size.y < _size.y)
+	if (size.x < _size.x)
 	{
-		return;
+		size.x = _size.x;
+	}
+
+	if (size.y < _size.y)
+	{
+		size.y = _size.y;
 	}
 
 	auto h_max = ((size.x < max_size.x ? size.x : max_size.x) - _size.x) / _step;
@@ -370,8 +372,8 @@ void gui::Scroll_area::resize(sf::Vector2f size)
 {
 	if (_size != size)
 	{
-		_v_slider.setSize({ 20, (_h_slider_use ? size.x - 20 : size.x) });
-		_h_slider.setSize({ (_v_slider_use ? size.y - 20 : size.y), 20 });
+		_v_slider.setSize({ 20, (_h_slider_use ? size.y - 20 : size.y) });
+		_h_slider.setSize({ (_v_slider_use ? size.x - 20 : size.x), 20 });
 
 		_rectangle.setSize({ _v_slider.getSize().x - 2, _h_slider.getSize().y - 2});
 
@@ -416,6 +418,9 @@ void gui::Scroll_area::resize(sf::Vector2f size)
 	float min_size_y = (_h_slider_use ? _h_slider.getSize().y : 0);
 
 	_scroll_area_rect = { { 0, 0 }, { (size.x - min_size_x), (size.y - min_size_y) } };
+
+	_scroll_area_rect.left = _h_slider.getValue() * _step;
+	_scroll_area_rect.top = _v_slider.getValue() * _step;
 
 	auto x = size.x / 2 + _step * _h_slider.getValue();
 
@@ -494,7 +499,9 @@ sf::Rect<float> gui::Scroll_area::getRealGlobalBounds(const gui_object * object)
 		size.y = (pointA.x < pointA.y ? pointA.x : pointA.y) - position.y;
 
 		position.x -= _step * _h_slider_value;
+		position.x += _position.x;
 		position.y -= _step * _v_slider_value;
+		position.y += _position.y;
 
 		return { position, size };
 	}
@@ -518,7 +525,9 @@ sf::Rect<float> gui::Scroll_area::getRealGlobalBounds(const sf::Rect<float>& obj
 		size.y = (pointA.x < pointA.y ? pointA.x : pointA.y) - position.y;
 
 		position.x -= _step * _h_slider_value;
+		position.x += _position.x;
 		position.y -= _step * _v_slider_value;
+		position.y += _position.y;
 
 		return { position, size };
 	}
