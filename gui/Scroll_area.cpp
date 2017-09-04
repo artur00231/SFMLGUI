@@ -1,16 +1,10 @@
 #include "Scroll_area.h"
 
-gui::Scroll_area::Scroll_area(owner & owner, const Text_style * text_style)
+gui::Scroll_area::Scroll_area(const Text_style * text_style) : _h_slider_use{ false }, _v_slider_use{ false }
 {
-	_owner = &owner;
-
 	if (text_style)
 	{
 		_default_text_style = *text_style;
-	}
-	else
-	{
-		_default_text_style = owner.getTextStyle();
 	}
 
 	_texture.reset(new sf::RenderTexture);
@@ -25,7 +19,9 @@ gui::Scroll_area::Scroll_area(owner & owner, const Text_style * text_style)
 
 void gui::Scroll_area::setSize(const sf::Vector2f & size)
 {
-	resize(size);
+	_size = size;
+	resize(true);
+	setScrollAreaSize({ _size.x - _h_slider.getMinMax().second * _step, _size.y - _v_slider.getMinMax().second * _step });
 }
 
 void gui::Scroll_area::setPosition(const sf::Vector2f & position)
@@ -59,11 +55,24 @@ const sf::Rect<float> gui::Scroll_area::getGlobalBounds() const
 
 void gui::Scroll_area::setOwner(owner & owner)
 {
-	_default_text_style = owner.getTextStyle();
-	owner.addObject(_h_slider);
-	owner.addObject(_v_slider);
+	_owner = &owner;
 
-	setSliders(true, true);
+	_default_text_style = owner.getTextStyle();
+
+	for (auto &x : _gui_objects)
+	{
+		x.second.first->setOwner(*this);
+	}
+
+	if (_h_slider_use)
+	{
+		_owner->addObject(_h_slider);
+	}
+	if (_v_slider_use)
+	{
+		_owner->addObject(_v_slider);
+	}
+
 }
 
 void gui::Scroll_area::removeFromOwner(owner & owner)
@@ -77,6 +86,8 @@ void gui::Scroll_area::removeFromOwner(owner & owner)
 	{
 		owner.remove(&_h_slider);
 	}
+
+	_owner = nullptr;
 }
 
 void gui::Scroll_area::draw(sf::RenderTarget & window) const
@@ -112,7 +123,7 @@ void gui::Scroll_area::remove(const std::string & name)
 
 	_gui_objects.erase(name);
 
-	resize(_size);
+	resize();
 }
 
 void gui::Scroll_area::remove(const gui::gui_object * object)
@@ -140,32 +151,38 @@ void gui::Scroll_area::remove(const gui::gui_object * object)
 		_gui_objects.erase(poz);
 	}
 
-	resize(_size);
+	resize();
 }
 
 void gui::Scroll_area::getEvents(active_gui_object & object, const sf::Window & window)
 {
-	auto real_global_bounds = getRealGlobalBounds(&object);
-
-	if (real_global_bounds != sf::Rect<float>{ {0, 0}, { 0, 0 } })
+	if (_owner)
 	{
-		_owner->getEvents(object, window, real_global_bounds);
+		auto real_global_bounds = getRealGlobalBounds(&object);
+
+		if (real_global_bounds != sf::Rect<float>{ {0, 0}, { 0, 0 } })
+		{
+			_owner->getEvents(object, window, real_global_bounds);
+		}
 	}
 }
 
 void gui::Scroll_area::getEvents(active_gui_object & object, const sf::Window & window, const sf::Rect<float>& rect)
 {
-	auto real_global_bounds = getRealGlobalBounds(rect);
-
-	if (real_global_bounds != sf::Rect<float>{ {0, 0}, { 0, 0 } })
+	if (_owner)
 	{
-		_owner->getEvents(object, window, real_global_bounds);
+		auto real_global_bounds = getRealGlobalBounds(rect);
+
+		if (real_global_bounds != sf::Rect<float>{ {0, 0}, { 0, 0 } })
+		{
+			_owner->getEvents(object, window, real_global_bounds);
+		}
 	}
 }
 
-gui::Mouse_info & gui::Scroll_area::getMouseInfo() const
+const gui::Mouse_info & gui::Scroll_area::getMouseInfo() const
 {
-	return _owner->getMouseInfo();
+	return _mouse_info;
 }
 
 gui::gui_object * gui::Scroll_area::get(const std::string & name) const
@@ -180,8 +197,8 @@ std::pair<bool, bool> gui::Scroll_area::getSliders() const
 
 sf::Vector2f gui::Scroll_area::getMaxSize() const
 {
-	auto max_x = _size.x + (_h_slider_use ? _h_slider.getMax() : 0) * _step;
-	auto max_y = _size.y + (_v_slider_use ? _v_slider.getMax() : 0) * _step;
+	auto max_x = _size.x + (_h_slider_use ? _h_slider.getMaxSteps() : 0) * _step;
+	auto max_y = _size.y + (_v_slider_use ? _v_slider.getMaxSteps() : 0) * _step;
 
 	return { max_x, max_y };
 }
@@ -189,18 +206,33 @@ sf::Vector2f gui::Scroll_area::getMaxSize() const
 sf::Vector2f gui::Scroll_area::getScrollAreaSize() const
 {
 	sf::Vector2f size;
-	size.x = static_cast<float>(_h_slider.getMinMax().second) * _step + size.x;
-	size.y = static_cast<float>(_v_slider.getMinMax().second) * _step + size.y;
+	size.x = _h_slider.getMinMax().second * _step + _size.x - (_v_slider_use ? _v_slider.getSize().x : 0);
+	size.y = _v_slider.getMinMax().second * _step + _size.y - (_h_slider_use ? _h_slider.getSize().x : 0);
 
 	return size;
 }
 
-const sf::Color & gui::Scroll_area::setClearColor() const
+const sf::Color & gui::Scroll_area::getClearColor() const
 {
 	return _clear_color;
 }
 
+sf::Vector2f gui::Scroll_area::getMaxScrollAreaSize() const
+{
+	auto max_v_slider = (_v_slider_use ? _v_slider.getMaxSteps() : 0);
+	auto max_h_slider = (_h_slider_use ? _h_slider.getMaxSteps() : 0);
+
+	sf::Vector2f max_scroll_area_size{ _size.x + _step * max_h_slider, _size.y + _step * max_v_slider };
+
+	return max_scroll_area_size;
+}
+
 gui::modifier::Horizontal_slider_modifier & gui::Scroll_area::getHorizontal_slider()
+{
+	return _h_slider;
+}
+
+const gui::modifier::Horizontal_slider_modifier & gui::Scroll_area::getHorizontal_slider() const
 {
 	return _h_slider;
 }
@@ -210,9 +242,16 @@ gui::modifier::Vertical_slider_modifier & gui::Scroll_area::getVertical_slider()
 	return _v_slider;
 }
 
+const gui::modifier::Vertical_slider_modifier & gui::Scroll_area::getVertical_slider() const
+{
+	return _v_slider;
+}
+
 void gui::Scroll_area::up_date(const sf::Window & window, gui::duration time_elapsed, owner & owner)
 {
 	bool need_resize = false;
+
+	_mouse_info = owner.getMouseInfo();
 
 	if (_v_slider.getValue() != _v_slider_value)
 	{
@@ -230,7 +269,7 @@ void gui::Scroll_area::up_date(const sf::Window & window, gui::duration time_ela
 
 	if (need_resize)
 	{
-		resize(_size);
+		resize();
 	}
 
 	std::vector<gui::Radio_button*> radio_buttons;
@@ -300,41 +339,51 @@ void gui::Scroll_area::setTextStyle(const Text_style & text_style)
 
 void gui::Scroll_area::setSliders(bool horizontal, bool vertical)
 {
-	if (horizontal)
+	if (_owner)
 	{
-		if (!_h_slider_use)
+		if (horizontal)
 		{
-			_owner->addObject(_h_slider);
-			_h_slider_use = true;
+			if (!_h_slider_use)
+			{
+				_owner->addObject(_h_slider);
+				_h_slider_use = true;
+			}
 		}
+		else
+		{
+			if (_h_slider_use)
+			{
+				_owner->remove(&_h_slider);
+				_h_slider_use = false;
+			}
+		}
+
+		if (vertical)
+		{
+			if (!_v_slider_use)
+			{
+				_owner->addObject(_v_slider);
+				_v_slider_use = true;
+			}
+		}
+		else
+		{
+			if (_v_slider_use)
+			{
+				_owner->remove(&_v_slider);
+				_v_slider_use = false;
+			}
+		}
+
+		resize();
 	}
 	else
 	{
-		if (_h_slider_use)
-		{
-			_owner->remove(&_h_slider);
-			_h_slider_use = false;
-		}
-	}
+		_v_slider_use = vertical;
+		_h_slider_use = horizontal;
 
-	if (vertical)
-	{
-		if (!_v_slider_use)
-		{
-			_owner->addObject(_v_slider);
-			_v_slider_use = true;
-		}
+		resize(true);
 	}
-	else
-	{
-		if (_v_slider_use)
-		{
-			_owner->remove(&_v_slider);
-			_v_slider_use = false;
-		}
-	}
-
-	resize(_size);
 }
 
 void gui::Scroll_area::setScrollAreaSize(sf::Vector2f size)
@@ -351,8 +400,8 @@ void gui::Scroll_area::setScrollAreaSize(sf::Vector2f size)
 		size.y = _size.y;
 	}
 
-	auto h_max = ((size.x < max_size.x ? size.x : max_size.x) - _size.x) / _step;
-	auto v_max = ((size.y < max_size.y ? size.y : max_size.y) - _size.y) / _step;
+	auto h_max = std::round(((size.x < max_size.x ? size.x : max_size.x) - _size.x) / _step);
+	auto v_max = std::round(((size.y < max_size.y ? size.y : max_size.y) - _size.y) / _step);
 
 	_h_slider.setMinMax(0, h_max);
 	_v_slider.setMinMax(0, v_max);
@@ -368,12 +417,12 @@ const gui::Text_style& gui::Scroll_area::getTextStyle() const
 	return _default_text_style;
 }
 
-void gui::Scroll_area::resize(sf::Vector2f size)
+void gui::Scroll_area::resize(bool size_changed)
 {
-	if (_size != size)
+	if (size_changed)
 	{
-		_v_slider.setSize({ 20, (_h_slider_use ? size.y - 20 : size.y) });
-		_h_slider.setSize({ (_v_slider_use ? size.x - 20 : size.x), 20 });
+		_v_slider.setSize({ 20, (_h_slider_use ? _size.y - 20 : _size.y) });
+		_h_slider.setSize({ (_v_slider_use ? _size.x - 20 : _size.x), 20 });
 
 		_rectangle.setSize({ _v_slider.getSize().x - 2, _h_slider.getSize().y - 2});
 
@@ -384,47 +433,42 @@ void gui::Scroll_area::resize(sf::Vector2f size)
 		float min_size_y = (_h_slider_use ? _h_slider.getSize().y : 0);
 
 
-		bool fit_x = size.x > min_size_x;
-		bool fit_y = size.y > min_size_y;
+		bool fit_x = _size.x > min_size_x;
+		bool fit_y = _size.y > min_size_y;
 
 		if (fit_x && fit_y)
 		{
-			_size = size;
 			_texture.reset(new sf::RenderTexture);
-			_texture->create(size.x - min_size_x, size.y - min_size_y);
-			_view.setSize(size.x - min_size_x, size.y - min_size_y);
-			_view.setCenter((size.x - min_size_x) / 2, (size.y - min_size_y) / 2);
-
-			//_real_size.x = static_cast<float>(_h_slider.setMax()) * _step + size.x;
-			//_real_size.y = static_cast<float>(_v_slider.setMax()) * _step + size.y;
-
+			_texture->create(_size.x - min_size_x, _size.y - min_size_y);
+			_view.setSize(_size.x - min_size_x, _size.y - min_size_y);
+			_view.setCenter((_size.x - min_size_x) / 2, (_size.y - min_size_y) / 2);
 		}
 		else
 		{
 			if (!fit_x)
 			{
-				size.x = min_size_x + 1;
+				_size.x = min_size_x + 1;
 			}
 			else if (!fit_y)
 			{
-				size.y = min_size_y + 1;
+				_size.y = min_size_y + 1;
 			}
 
-			resize(size);
+			resize(true);
 		}
 	}
 
 	float min_size_x = (_v_slider_use ? _v_slider.getSize().x : 0);
 	float min_size_y = (_h_slider_use ? _h_slider.getSize().y : 0);
 
-	_scroll_area_rect = { { 0, 0 }, { (size.x - min_size_x), (size.y - min_size_y) } };
+	_scroll_area_rect = { { 0, 0 }, { (_size.x - min_size_x), (_size.y - min_size_y) } };
 
 	_scroll_area_rect.left = _h_slider.getValue() * _step;
 	_scroll_area_rect.top = _v_slider.getValue() * _step;
 
-	auto x = size.x / 2 + _step * _h_slider.getValue();
+	auto x = _size.x / 2 + _step * _h_slider.getValue();
 
-	_view.setCenter((size.x - min_size_x) / 2 + _step * _h_slider.getValue(), (size.y - min_size_y) / 2 + _step * _v_slider.getValue());
+	_view.setCenter((_size.x - min_size_x) / 2 + _step * _h_slider.getValue(), (_size.y - min_size_y) / 2 + _step * _v_slider.getValue());
 
 	setPosition(_position);
 
@@ -554,7 +598,7 @@ gui::gui_object * gui::Scroll_area::addToMap(gui::gui_object * object, const std
 	object->setOwner(*this);
 
 
-	resize(_size);
+	resize();
 
 	return object;
 }
@@ -577,7 +621,7 @@ gui::gui_object * gui::Scroll_area::addToMap(gui::gui_object & object, const std
 	_gui_objects.insert(pair);
 	object.setOwner(*this);
 
-	resize(_size);
+	resize();
 
 	return &object;
 }

@@ -34,8 +34,8 @@ namespace gui
 			virtual void unset() = 0;
 
 			// Function_modifier can not by copied
-			Function_modifier(const Function_modifier&) = delete;
-			Function_modifier& operator=(const Function_modifier&) = delete;
+			Function_modifier(const Function_modifier&) = default;
+			Function_modifier& operator=(const Function_modifier&) = default;
 
 			virtual ~Function_modifier() {};
 		};
@@ -47,6 +47,8 @@ namespace gui
 	public:
 		Function() {};
 
+		Function(const Function&) = default;
+		Function& operator=(const Function&) = default;
 		Function(Function&&) = default;
 		Function& operator=(Function&&) = default;
 
@@ -62,7 +64,7 @@ namespace gui
 		~Function() {};
 
 	private:
-		std::unique_ptr<function> _function_1;
+		std::shared_ptr<function> _function_1;
 		std::function<void(const Mouse_info&, gui::duration&, active_gui_object*)> _function_2;
 		std::function<void(active_gui_object*)> _function_3;
 		std::function<void()> _function_4;

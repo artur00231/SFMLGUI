@@ -22,6 +22,7 @@ namespace gui {
 			void setPosition(const sf::Vector2f & position);
 			void setCharacterColor(const sf::Color & color);
 			bool setFont(const std::string & path);
+			void setFont(const sf::Font & font);
 			void setCharacterSize(unsigned int size);
 			void setString(const sf::String & text);
 			void setStyle(sf::Uint32 style);
@@ -32,6 +33,7 @@ namespace gui {
 			const sf::Vector2f& getPosition() const;
 			const sf::Rect<float> getGlobalBounds() const;
 			const sf::Color& getCharacteColor() const;
+			const sf::Font& getFont() const;
 			unsigned int getCharacterSize() const;
 			const sf::String& getString() const;
 			const Text_status& getStatus() const;
@@ -52,7 +54,7 @@ namespace gui {
 			Text_status _text_status = Text_status::OK;
 			Align _align = Align::CENTER;
 			float _padding_left = 0, _padding_top_bottom = 0;
-			const float _min_padding = 5.0f;
+			float _min_padding = 5.0f;
 		};
 
 		inline LabelImp::LabelImp(const sf::String & text, const Text_style * text_style)
@@ -89,12 +91,25 @@ namespace gui {
 
 		inline bool LabelImp::setFont(const std::string & path)
 		{
-			bool loaded_correctly = _font.loadFromFile(path);
+			bool loaded_correctly = false;
+
+			if (path != "")
+			{
+				loaded_correctly = _font.loadFromFile(path);
+			}
 
 			// Resize text
 			resize();
 
 			return loaded_correctly;
+		}
+
+		inline void LabelImp::setFont(const sf::Font & font)
+		{
+			_font = font;
+
+			// Resize text
+			resize();
 		}
 
 		inline void LabelImp::setCharacterSize(unsigned int size)
@@ -123,7 +138,10 @@ namespace gui {
 
 		inline void LabelImp::setTextStyle(const Text_style & text_style)
 		{
-			_font.loadFromFile(text_style._font_patch);
+			if (text_style._font_patch != "")
+			{
+				_font.loadFromFile(text_style._font_patch);
+			}
 			_text.setCharacterSize(text_style._character_size);
 			_text.setFillColor(text_style._color);
 			_text.setStyle(text_style._style);
@@ -158,6 +176,11 @@ namespace gui {
 		inline const sf::Color & LabelImp::getCharacteColor() const
 		{
 			return _text.getFillColor();
+		}
+
+		inline const sf::Font & LabelImp::getFont() const
+		{
+			return _font;
 		}
 
 		inline unsigned int LabelImp::getCharacterSize() const
@@ -234,6 +257,13 @@ namespace gui {
 
 			// The text can be display
 			_text_status = Text_status::OK;
+
+			// Fix weird error
+			// NOTE: String must by replace by another, different string,
+			// NOTE: after wich the text will by dislpayed correctly
+			auto string = _text.getString();
+			_text.setString("");
+			_text.setString(string);
 
 			setPosition(_rectangle.getPosition());
 		}

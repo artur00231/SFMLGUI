@@ -33,11 +33,12 @@ namespace gui
 			virtual bool getRepeated() = 0;
 			virtual bool getSmooth() = 0;
 
-			// Image_modifier can not by copied
-			Image_modifier(const Image_modifier&) = delete;
-			Image_modifier& operator=(const Image_modifier&) = delete;
-
 			~Image_modifier() {};
+
+		protected:
+			// Image_modifier can not by copied
+			Image_modifier(const Image_modifier&) = default;
+			Image_modifier& operator=(const Image_modifier&) = default;
 		};
 
 	}

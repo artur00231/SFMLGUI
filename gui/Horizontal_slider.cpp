@@ -12,6 +12,8 @@ gui::Horizontal_slider::Horizontal_slider(long long max, long long min) : _left{
 	_middle.getBackground().setColor(gray);
 	_middle.getFrame().setThickness(1);
 	_middle.getFrame().setColor(sf::Color::Black);
+
+	setValue(_min);
 }
 
 void gui::Horizontal_slider::setSize(const sf::Vector2f & size)
@@ -75,6 +77,8 @@ void gui::Horizontal_slider::setOwner(owner & owner)
 	owner.addObject(_left);
 	owner.addObject(_right);
 	owner.addObject(_middle);
+
+	setValue(_value);
 }
 
 void gui::Horizontal_slider::removeFromOwner(owner & owner)
@@ -199,12 +203,17 @@ void gui::Horizontal_slider::setMinMax(long long min, long long max)
 	resize();
 }
 
-long long gui::Horizontal_slider::getMax() const
+long long gui::Horizontal_slider::getMaxSteps() const
 {
 	float middle_size_x = _size.x - 2 * _frame.getThickness() - 2 * _button_min_size.x;
 	long long max_steps = static_cast<long long>(std::floor(middle_size_x / _middle_button_min_size.x)) - 1;
 
 	return max_steps;
+}
+
+float gui::Horizontal_slider::getMinButtonSize() const
+{
+	return _button_min_size.y;
 }
 
 long long gui::Horizontal_slider::getValue() const
@@ -287,15 +296,29 @@ gui::modifier::Frame_modifier & gui::Horizontal_slider::getFrame()
 	return _frame;
 }
 
+const gui::modifier::Frame_modifier & gui::Horizontal_slider::getFrame() const
+{
+	return _frame;
+}
+
 gui::modifier::Background_modifier & gui::Horizontal_slider::getBackground()
 {
 	_need_resize = true;
 	return _background;
 }
 
+const gui::modifier::Background_modifier & gui::Horizontal_slider::getBackground() const
+{
+	return _background;
+}
+
 gui::modifier::Function_modifier & gui::Horizontal_slider::getFunction()
 {
-	_need_resize = true;
+	return _function;
+}
+
+const gui::modifier::Function_modifier & gui::Horizontal_slider::getFunction() const
+{
 	return _function;
 }
 
@@ -305,15 +328,30 @@ gui::modifier::Button_modifier & gui::Horizontal_slider::getLeft()
 	return _left;
 }
 
+const gui::modifier::Button_modifier & gui::Horizontal_slider::getLeft() const
+{
+	return _left;
+}
+
 gui::modifier::Button_modifier & gui::Horizontal_slider::getRight()
 {
 	_need_resize = true;
 	return _right;
 }
 
+const gui::modifier::Button_modifier & gui::Horizontal_slider::getRight() const
+{
+	return _right;
+}
+
 gui::modifier::Button_modifier & gui::Horizontal_slider::getMiddle()
 {
 	_need_resize = true;
+	return _middle;
+}
+
+const gui::modifier::Button_modifier & gui::Horizontal_slider::getMiddle() const
+{
 	return _middle;
 }
 

@@ -203,9 +203,19 @@ gui::modifier::Frame_modifier & gui::Radio_button::getFrame()
 	return _frame;
 }
 
+const gui::modifier::Frame_modifier & gui::Radio_button::getFrame() const
+{
+	return _frame;
+}
+
 gui::modifier::Label_modifier & gui::Radio_button::getLabel()
 {
 	_need_resize = true;
+	return _label;
+}
+
+const gui::modifier::Label_modifier & gui::Radio_button::getLabel() const
+{
 	return _label;
 }
 
@@ -215,7 +225,17 @@ gui::modifier::Background_modifier & gui::Radio_button::getBackground()
 	return _background;
 }
 
+const gui::modifier::Background_modifier & gui::Radio_button::getBackground() const
+{
+	return _background;
+}
+
 gui::modifier::Function_modifier & gui::Radio_button::getFunction()
+{
+	return _function;
+}
+
+const gui::modifier::Function_modifier & gui::Radio_button::getFunction() const
 {
 	return _function;
 }
@@ -223,6 +243,11 @@ gui::modifier::Function_modifier & gui::Radio_button::getFunction()
 gui::modifier::Image_modifier & gui::Radio_button::getCheckedMark()
 {
 	_need_resize = true;
+	return _checked_mark;
+}
+
+const gui::modifier::Image_modifier & gui::Radio_button::getCheckedMark() const
+{
 	return _checked_mark;
 }
 

@@ -77,6 +77,8 @@ void gui::Vertical_slider::setOwner(owner & owner)
 	owner.addObject(_up);
 	owner.addObject(_down);
 	owner.addObject(_middle);
+
+	setValue(_value);
 }
 
 void gui::Vertical_slider::removeFromOwner(owner & owner)
@@ -201,12 +203,17 @@ void gui::Vertical_slider::setMinMax(long long min, long long max)
 	resize();
 }
 
-long long gui::Vertical_slider::getMax() const
+long long gui::Vertical_slider::getMaxSteps() const
 {
 	float middle_size_y = _size.y - 2 * _frame.getThickness() - 2 * _button_min_size.y;
 	long long max_steps = static_cast<long long>(std::floor(middle_size_y / _middle_button_min_size.y)) - 1;
 
 	return max_steps;
+}
+
+float gui::Vertical_slider::getMinButtonSize() const
+{
+	return _button_min_size.x;
 }
 
 long long gui::Vertical_slider::getValue() const
@@ -289,15 +296,29 @@ gui::modifier::Frame_modifier & gui::Vertical_slider::getFrame()
 	return _frame;
 }
 
+const gui::modifier::Frame_modifier & gui::Vertical_slider::getFrame() const
+{
+	return _frame;
+}
+
 gui::modifier::Background_modifier & gui::Vertical_slider::getBackground()
 {
 	_need_resize = true;
 	return _background;
 }
 
+const gui::modifier::Background_modifier & gui::Vertical_slider::getBackground() const
+{
+	return _background;
+}
+
 gui::modifier::Function_modifier & gui::Vertical_slider::getFunction()
 {
-	_need_resize = true;
+	return _function;
+}
+
+const gui::modifier::Function_modifier & gui::Vertical_slider::getFunction() const
+{
 	return _function;
 }
 
@@ -307,15 +328,30 @@ gui::modifier::Button_modifier & gui::Vertical_slider::getUp()
 	return _up;
 }
 
+const gui::modifier::Button_modifier & gui::Vertical_slider::getUp() const
+{
+	return _up;
+}
+
 gui::modifier::Button_modifier & gui::Vertical_slider::getDown()
 {
 	_need_resize = true;
 	return _down;
 }
 
+const gui::modifier::Button_modifier & gui::Vertical_slider::getDown() const
+{
+	return _down;
+}
+
 gui::modifier::Button_modifier & gui::Vertical_slider::getMiddle()
 {
 	_need_resize = true;
+	return _middle;
+}
+
+const gui::modifier::Button_modifier & gui::Vertical_slider::getMiddle() const
+{
 	return _middle;
 }
 

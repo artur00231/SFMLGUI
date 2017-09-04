@@ -193,9 +193,19 @@ gui::modifier::Frame_modifier & gui::Checkbox::getFrame()
 	return _frame;
 }
 
+const gui::modifier::Frame_modifier & gui::Checkbox::getFrame() const
+{
+	return _frame;
+}
+
 gui::modifier::Label_modifier & gui::Checkbox::getLabel()
 {
 	_need_resize = true;
+	return _label;
+}
+
+const gui::modifier::Label_modifier & gui::Checkbox::getLabel() const
+{
 	return _label;
 }
 
@@ -205,7 +215,17 @@ gui::modifier::Background_modifier & gui::Checkbox::getBackground()
 	return _background;
 }
 
+const gui::modifier::Background_modifier & gui::Checkbox::getBackground() const
+{
+	return _background;
+}
+
 gui::modifier::Function_modifier & gui::Checkbox::getFunction()
+{
+	return _function;
+}
+
+const gui::modifier::Function_modifier & gui::Checkbox::getFunction() const
 {
 	return _function;
 }
@@ -213,6 +233,11 @@ gui::modifier::Function_modifier & gui::Checkbox::getFunction()
 gui::modifier::Image_modifier & gui::Checkbox::getCheckedMark()
 {
 	_need_resize = true;
+	return _checked_mark;
+}
+
+const gui::modifier::Image_modifier & gui::Checkbox::getCheckedMark() const
+{
 	return _checked_mark;
 }
 

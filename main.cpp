@@ -32,40 +32,26 @@ int main()
 	window_settings.antialiasingLevel = 0;
 
 	sf::RenderWindow window(sf::VideoMode(width, heigth), "Ui design normal", sf::Style::Close, window_settings);
-	window.setFramerateLimit(60);
+	window.setFramerateLimit(120);
 
 	gui::Text_style s{ "fonts\\arial.ttf", 20, sf::Color::Black };
 
 	gui::Gui gui(s);
-	
-	gui::Button * main_button = gui.add(new gui::Button{ "1" });
-	main_button->setPosition({ 0, 0 });
-	main_button->setSize({ 100, 50 });
-	main_button->getBackground().setColor(sf::Color::Yellow);
 
-	gui::Button * button = gui.add(new gui::Button{ L"\u02C5" });
-	button->setPosition({ 100, 0 });
-	button->setSize({ 20, 50 });
-	button->getBackground().setColor(sf::Color::Yellow);
+	auto combo_box = gui.add(new gui::Combo_box{});
+	combo_box->setPosition({ 200, 0 });
+	combo_box->setSize({ 120, 60});
 
-	gui::Scroll_area * area = gui.add(new gui::Scroll_area{ gui });
-	area->setSliders(false, true);
-	area->setSize({ 120, 100 });
-	area->setScrollAreaSize({ 120, 200 });
-	area->setPosition({ 0, 50 });
+	std::vector<sf::String> a{ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
+	combo_box->setOptions(a);
 
-	gui::Vertical_layout * layout = area->add(new gui::Vertical_layout{ *area });
-	layout->setPosition({ 0, 0 });
-	layout->setSize({ 100, 200 });
+	combo_box->getBackground().setColor(sf::Color::Green);
+	combo_box->getFrame().setThickness(2);
+	combo_box->getFrame().setColor(sf::Color::Black);
 
-	button = layout->add(new gui::Button{ "1" });
-	button->getFunction().set([main_button](gui::gui_object*obj) {foo(obj, main_button); });
-	button = layout->add(new gui::Button{ "2" });
-	button->getFunction().set([main_button](gui::gui_object*obj) {foo(obj, main_button); });
-	button = layout->add(new gui::Button{ "3" });
-	button->getFunction().set([main_button](gui::gui_object*obj) {foo(obj, main_button); });
-	button = layout->add(new gui::Button{ "4" });
-	button->getFunction().set([main_button](gui::gui_object*obj) {foo(obj, main_button); });
+	combo_box->getOption().getFrame().setThickness(1);
+	combo_box->getOption().getFrame().setColor(sf::Color::Black);
+
 
 	while (window.isOpen())
 	{

@@ -83,7 +83,7 @@ void gui::Gui::getEvents(active_gui_object & object, const sf::Window & window, 
 	_event.getEvents(object, window, rect);
 }
 
-gui::Mouse_info & gui::Gui::getMouseInfo() const
+const gui::Mouse_info & gui::Gui::getMouseInfo() const
 {
 	return *_mouse_info_pointer;
 }

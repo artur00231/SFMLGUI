@@ -11,7 +11,7 @@ namespace gui
 	class Vertical_layout : public managing_gui_object
 	{
 	public:
-		Vertical_layout(owner&, const Text_style* = {});
+		Vertical_layout(const Text_style* = {});
 
 		Vertical_layout(Vertical_layout&&);
 
@@ -38,7 +38,7 @@ namespace gui
 
 		void getEvents(active_gui_object & object, const sf::Window & window) override;
 		void getEvents(active_gui_object & object, const sf::Window & window, const sf::Rect<float> & rect) override;
-		Mouse_info& getMouseInfo() const override;
+		const Mouse_info& getMouseInfo() const override;
 
 		void draw(sf::RenderTarget&) const override;
 		void up_date(const sf::Window&, duration, owner&) override;
@@ -67,6 +67,8 @@ namespace gui
 		long long _uniqe_name_count = 0;
 		Text_style _default_text_style;
 		sf::Vector2f _position, _size;
+		Mouse_info _mouse_info;
+		std::vector <gui_object*> _ordered_objects;
 
 		owner * _owner;
 	};

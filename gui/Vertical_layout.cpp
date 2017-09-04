@@ -1,14 +1,10 @@
 #include "Vertical_layout.h"
 
-gui::Vertical_layout::Vertical_layout(owner & owner, const Text_style * text_style) : _owner{ &owner }
+gui::Vertical_layout::Vertical_layout(const Text_style * text_style)
 {
 	if (text_style)
 	{
 		_default_text_style = *text_style;
-	}
-	else
-	{
-		_default_text_style = owner.getTextStyle();
 	}
 }
 
@@ -52,12 +48,19 @@ const sf::Rect<float> gui::Vertical_layout::getGlobalBounds() const
 
 void gui::Vertical_layout::setOwner(owner & owner)
 {
+	_owner = &owner;
+
 	_default_text_style = owner.getTextStyle();
+
+	for (auto &x : _gui_objects)
+	{
+		x.second.first->setOwner(*this);
+	}
 }
 
 void gui::Vertical_layout::removeFromOwner(owner & owner)
 {
-	// Do nothing
+	_owner = nullptr;
 }
 
 void gui::Vertical_layout::draw(sf::RenderTarget & window) const
@@ -80,18 +83,28 @@ gui::gui_object * gui::Vertical_layout::addObject(gui::gui_object & object, cons
 
 void gui::Vertical_layout::remove(const std::string & name)
 {
-	auto to_erase = _gui_objects[name];
-
-	to_erase.first->removeFromOwner(*this);
-
-	if (to_erase.second.first)
+	if (_gui_objects.count(name) > 0)
 	{
-		delete to_erase.first;
+		auto to_erase = _gui_objects[name];
+
+		to_erase.first->removeFromOwner(*this);
+
+		if (to_erase.second.first)
+		{
+			delete to_erase.first;
+		}
+
+		_gui_objects.erase(name);
+
+		auto it = std::remove(_ordered_objects.begin(), _ordered_objects.end(), to_erase.first);
+
+		if (it != _ordered_objects.end())
+		{
+			_ordered_objects.erase(it);
+		}
+
+		re_size();
 	}
-
-	_gui_objects.erase(name);
-
-	re_size();
 }
 
 void gui::Vertical_layout::remove(const gui::gui_object * object)
@@ -117,24 +130,37 @@ void gui::Vertical_layout::remove(const gui::gui_object * object)
 		}
 
 		_gui_objects.erase(poz);
-	}
 
-	re_size();
+		auto it = std::remove(_ordered_objects.begin(), _ordered_objects.end(), poz->second.first);
+
+		if (it != _ordered_objects.end())
+		{
+			_ordered_objects.erase(it);
+		}
+
+		re_size();
+	}
 }
 
 void gui::Vertical_layout::getEvents(active_gui_object & object, const sf::Window & window)
 {
-	_owner->getEvents(object, window);
+	if (_owner)
+	{
+		_owner->getEvents(object, window);
+	}
 }
 
 void gui::Vertical_layout::getEvents(active_gui_object & object, const sf::Window & window, const sf::Rect<float>& rect)
 {
-	_owner->getEvents(object, window, rect);
+	if (_owner)
+	{
+		_owner->getEvents(object, window, rect);
+	}
 }
 
-gui::Mouse_info & gui::Vertical_layout::getMouseInfo() const
+const gui::Mouse_info & gui::Vertical_layout::getMouseInfo() const
 {
-	return _owner->getMouseInfo();
+	return _mouse_info;
 }
 
 gui::gui_object * gui::Vertical_layout::get(const std::string & name) const
@@ -144,6 +170,8 @@ gui::gui_object * gui::Vertical_layout::get(const std::string & name) const
 
 void gui::Vertical_layout::up_date(const sf::Window & window, gui::duration time_elapsed, owner & owner)
 {
+	_mouse_info = owner.getMouseInfo();
+
 	std::vector<gui::Radio_button*> radio_buttons;
 
 	for (auto &x : _gui_objects)
@@ -187,20 +215,10 @@ const gui::Text_style& gui::Vertical_layout::getTextStyle() const
 
 void gui::Vertical_layout::re_size()
 {
-	std::vector<gui::gui_object*> layout_objects;
-
-	for (auto &x : _gui_objects)
-	{
-		if (x.second.second.first)
-		{
-			layout_objects.push_back(x.second.first);
-		}
-	}
-
-	float objects_height = _size.y / layout_objects.size();
+	float objects_height = _size.y / _ordered_objects.size();
 	float objects_position_y = _position.y;
 
-	for (auto x : layout_objects)
+	for (auto &x : _ordered_objects)
 	{
 		x->setSize({ _size.x, objects_height });
 		x->setPosition({ _position.x, objects_position_y });
@@ -267,6 +285,9 @@ gui::gui_object * gui::Vertical_layout::addToMap(gui::gui_object * object, const
 
 	std::pair<std::string, std::pair<gui::gui_object*, std::pair<bool, bool>>> pair{ object_name,{ object, {true, add_to_layout } } };
 	_gui_objects.insert(pair);
+	{
+		_ordered_objects.push_back(object);
+	}
 	object->setOwner(*this);
 
 	re_size();
@@ -290,6 +311,10 @@ gui::gui_object * gui::Vertical_layout::addToMap(gui::gui_object & object, const
 
 	std::pair<std::string, std::pair<gui::gui_object*, std::pair<bool, bool>>> pair{ object_name,{ &object, {false, add_to_layout } } };
 	_gui_objects.insert(pair);
+	if (add_to_layout)
+	{
+		_ordered_objects.push_back(&object);
+	}
 	object.setOwner(*this);
 
 	re_size();

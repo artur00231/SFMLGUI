@@ -18,6 +18,8 @@
 #include "Vertical_layout.h"
 #include "Horizontal_slider.h"
 #include "Vertical_slider.h"
+#include "Scroll_area.h"
+#include "Combo_box.h"
 
 #include <unordered_map>
 #include <chrono>
@@ -47,7 +49,7 @@ namespace gui
 
 		void getEvents(active_gui_object & object, const sf::Window & window) override;
 		void getEvents(active_gui_object & object, const sf::Window & window, const sf::Rect<float> & rect) override;
-		Mouse_info& getMouseInfo() const override;
+		const Mouse_info& getMouseInfo() const override;
 
 		void draw(sf::RenderTarget & render_target) const;
 		void up_date(const sf::Window & window);
