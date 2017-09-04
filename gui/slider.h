@@ -14,7 +14,8 @@ namespace gui
 
 		virtual long long getValue() const = 0;
 		virtual std::pair<long long, long long> getMinMax() const = 0;
-		virtual long long getMax() const = 0;
+		virtual long long getMaxSteps() const = 0;
+		virtual float getMinButtonSize() const = 0;
 	};
 
 }

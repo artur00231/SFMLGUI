@@ -49,16 +49,22 @@ namespace gui
 			virtual std::pair<float, float> getProportions() const = 0;
 
 			virtual modifier::Frame_modifier& getFrame() = 0;
+			virtual const modifier::Frame_modifier& getFrame() const = 0;
 			virtual modifier::Label_modifier& getLabel() = 0;
+			virtual const modifier::Label_modifier& getLabel() const = 0;
 			virtual modifier::Background_modifier& getBackground() = 0;
+			virtual const modifier::Background_modifier& getBackground() const = 0;
 			virtual modifier::Function_modifier& getFunction() = 0;
+			virtual const modifier::Function_modifier& getFunction() const = 0;
 			virtual modifier::Image_modifier& getCheckedMark() = 0;
-
-			// Radio_button_modifier can not by copied
-			Radio_button_modifier(const Radio_button_modifier&) = delete;
-			Radio_button_modifier& operator=(const Radio_button_modifier&) = delete;
+			virtual const modifier::Image_modifier& getCheckedMark() const = 0;
 
 			virtual ~Radio_button_modifier() = default;
+
+		protected:
+			// Radio_button_modifier can not by copied
+			Radio_button_modifier(const Radio_button_modifier&) = default;
+			Radio_button_modifier& operator=(const Radio_button_modifier&) = default;
 		};
 
 	}
@@ -110,10 +116,15 @@ namespace gui
 		void resize() override;
 
 		modifier::Frame_modifier& getFrame() override;
+		const modifier::Frame_modifier& getFrame() const override;
 		modifier::Label_modifier& getLabel() override;
+		const modifier::Label_modifier& getLabel() const override;
 		modifier::Background_modifier& getBackground() override;
+		const modifier::Background_modifier& getBackground() const override;
 		modifier::Function_modifier& getFunction() override;
+		const modifier::Function_modifier& getFunction() const override;
 		modifier::Image_modifier& getCheckedMark() override;
+		const modifier::Image_modifier& getCheckedMark() const override;
 
 
 

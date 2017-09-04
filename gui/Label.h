@@ -19,6 +19,7 @@ namespace gui {
 
 			virtual void setColor(const sf::Color & color) = 0;
 			virtual bool setFont(const std::string & path) = 0;
+			virtual void setFont(const sf::Font & font) = 0;
 			virtual void setCharacterSize(unsigned int size) = 0;
 			virtual void setString(const sf::String & text) = 0;
 			virtual void setStyle(sf::Uint32 style) = 0;
@@ -26,18 +27,19 @@ namespace gui {
 			virtual void setAlign(Align align) = 0;
 
 			virtual const sf::Color& getColor() const = 0;
+			virtual const sf::Font& getFont() const = 0;
 			virtual unsigned int getCharacterSize() const = 0;
 			virtual const sf::String& getString() const = 0;
 			virtual const Text_status& getStatus() const = 0;
 			virtual int getStyle() const = 0;
 			virtual Align getAlign() = 0;
 
-			// Label_modifier can not by copied
-			Label_modifier(const Label_modifier&) = delete;
-			Label_modifier& operator=(const Label_modifier&) = delete;
-
 			virtual ~Label_modifier() {};
 
+		protected:
+			// Label_modifier can not by copied
+			Label_modifier(const Label_modifier&) = default;
+			Label_modifier& operator=(const Label_modifier&) = default;
 		};
 
 	}
@@ -67,12 +69,14 @@ namespace gui {
 		void removeFromOwner(owner & owner) override;
 
 		bool setFont(const std::string & path) override;
+		void setFont(const sf::Font & font) override;
 		void setCharacterSize(unsigned int size) override;
 		void setString(const sf::String & text) override;
 		void setStyle(sf::Uint32 style) override;
 		void setTextStyle(const Text_style & text_style) override;
 		void setAlign(Align align) override;
 
+		const sf::Font& getFont() const override;
 		unsigned int getCharacterSize() const override;
 		const sf::String& getString() const override;
 		const Text_status& getStatus() const override;

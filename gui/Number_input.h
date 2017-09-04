@@ -59,15 +59,20 @@ namespace gui
 			virtual double getProportionsTextButton() const = 0;
 
 			virtual modifier::Frame_modifier& getFrame() = 0;
+			virtual const modifier::Frame_modifier& getFrame() const = 0;
 			virtual modifier::Label_modifier& getLabel() = 0;
+			virtual const modifier::Label_modifier& getLabel() const = 0;
 			virtual modifier::Background_modifier& getBackground() = 0;
+			virtual const modifier::Background_modifier& getBackground() const = 0;
 			virtual modifier::Function_modifier& getFunction() = 0;
-
-			// Number_input_modifier can not by copied
-			Number_input_modifier(const Number_input_modifier&) = delete;
-			Number_input_modifier& operator=(const Number_input_modifier&) = delete;
+			virtual const modifier::Function_modifier& getFunction() const = 0;
 
 			virtual ~Number_input_modifier() = default;
+
+		protected:
+			// Number_input_modifier can not by copied
+			Number_input_modifier(const Number_input_modifier&) = default;
+			Number_input_modifier& operator=(const Number_input_modifier&) = default;
 		};
 
 	}
@@ -130,9 +135,13 @@ namespace gui
 
 
 		modifier::Frame_modifier& getFrame() override;
+		const modifier::Frame_modifier& getFrame() const override;
 		modifier::Label_modifier& getLabel() override;
+		const modifier::Label_modifier& getLabel() const override;
 		modifier::Background_modifier& getBackground() override;
+		const modifier::Background_modifier& getBackground() const override;
 		modifier::Function_modifier& getFunction() override;
+		const modifier::Function_modifier& getFunction() const override;
 
 		~Number_input() {};
 

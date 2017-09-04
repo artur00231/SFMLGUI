@@ -59,6 +59,11 @@ bool gui::Label::setFont(const std::string & font_path)
 	return LabelImp::setFont(font_path);
 }
 
+void gui::Label::setFont(const sf::Font & font)
+{
+	LabelImp::setFont(font);
+}
+
 void gui::Label::setCharacterSize(unsigned int size)
 {
 	LabelImp::setCharacterSize(size);
@@ -82,6 +87,11 @@ void gui::Label::setTextStyle(const Text_style & style)
 void gui::Label::setAlign(Align align)
 {
 	LabelImp::setAlign(align);
+}
+
+const sf::Font & gui::Label::getFont() const
+{
+	return LabelImp::getFont();
 }
 
 unsigned int gui::Label::getCharacterSize() const

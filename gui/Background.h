@@ -28,11 +28,12 @@ namespace gui
 			virtual Background_type getBackground_type() const = 0;
 			virtual modifier::Image_modifier* getImage() = 0;
 
-			// Background_modifier can not by copied
-			Background_modifier(const Background_modifier&) = delete;
-			Background_modifier& operator=(const Background_modifier&) = delete;
-
 			virtual ~Background_modifier() {};
+
+		protected:
+			// Background_modifier can not by copied
+			Background_modifier(const Background_modifier&) = default;
+			Background_modifier& operator=(const Background_modifier&) = default;
 		};
 
 	}
@@ -74,7 +75,7 @@ namespace gui
 
 	private:
 		Background_type _background_type = Background_type::COLOR;
-		std::unique_ptr<Image> _image;
+		std::shared_ptr<Image> _image;
 		sf::RectangleShape _rectangle;
 
 	};

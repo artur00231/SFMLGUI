@@ -26,11 +26,12 @@ namespace gui
 			virtual float getThickness() const = 0;
 			virtual const sf::Color& getColor() const = 0;
 
-			// Frame_modifier can not by copied
-			Frame_modifier(const Frame_modifier&) = delete;
-			Frame_modifier& operator=(const Frame_modifier&) = delete;
-
 			virtual ~Frame_modifier() {};
+
+		protected:
+			// Frame_modifier can not by copied
+			Frame_modifier(const Frame_modifier&) = default;
+			Frame_modifier& operator=(const Frame_modifier&) = default;
 		};
 
 	}

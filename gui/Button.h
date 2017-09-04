@@ -38,15 +38,20 @@ namespace gui
 
 
 			virtual modifier::Frame_modifier& getFrame() = 0;
+			virtual const modifier::Frame_modifier& getFrame() const = 0;
 			virtual modifier::Label_modifier& getLabel() = 0;
+			virtual const modifier::Label_modifier& getLabel() const = 0;
 			virtual modifier::Background_modifier& getBackground() = 0;
+			virtual const modifier::Background_modifier& getBackground() const = 0;
 			virtual modifier::Function_modifier& getFunction() = 0;
-
-			// Button_modifier can not by copied
-			Button_modifier(const Button_modifier&) = delete;
-			Button_modifier& operator=(const Button_modifier&) = delete;
+			virtual const modifier::Function_modifier& getFunction() const = 0;
 
 			virtual ~Button_modifier() = default;
+
+		protected:
+			// Button_modifier can not by copied
+			Button_modifier(const Button_modifier&) = default;
+			Button_modifier& operator=(const Button_modifier&) = default;
 		};
 
 	}
@@ -89,9 +94,13 @@ namespace gui
 
 
 		modifier::Frame_modifier& getFrame() override;
+		const modifier::Frame_modifier& getFrame() const override;
 		modifier::Label_modifier& getLabel() override;
+		const modifier::Label_modifier& getLabel() const override;
 		modifier::Background_modifier& getBackground() override;
+		const modifier::Background_modifier& getBackground() const override;
 		modifier::Function_modifier& getFunction() override;
+		const modifier::Function_modifier& getFunction() const override;
 
 
 		~Button() {};

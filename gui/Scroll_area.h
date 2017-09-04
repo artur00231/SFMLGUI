@@ -13,7 +13,7 @@ namespace gui
 	class Scroll_area : public managing_gui_object
 	{
 	public:
-		Scroll_area(owner&, const Text_style* = {});
+		Scroll_area(const Text_style* = {});
 
 		void setSize(const sf::Vector2f&) override;
 		void setPosition(const sf::Vector2f&) override;
@@ -38,7 +38,7 @@ namespace gui
 
 		void getEvents(active_gui_object & object, const sf::Window & window) override;
 		void getEvents(active_gui_object & object, const sf::Window & window, const sf::Rect<float> & rect) override;
-		Mouse_info& getMouseInfo() const override;
+		const Mouse_info& getMouseInfo() const override;
 
 		void draw(sf::RenderTarget&) const override;
 		void up_date(const sf::Window&, duration, owner&) override;
@@ -53,15 +53,18 @@ namespace gui
 		std::pair<bool, bool> getSliders() const;
 		sf::Vector2f getMaxSize() const;
 		sf::Vector2f getScrollAreaSize() const;
-		const sf::Color& setClearColor() const;
+		const sf::Color& getClearColor() const;
+		sf::Vector2f getMaxScrollAreaSize() const;
 
 		modifier::Horizontal_slider_modifier& getHorizontal_slider();
+		const modifier::Horizontal_slider_modifier& getHorizontal_slider() const;
 		modifier::Vertical_slider_modifier& getVertical_slider();
+		const modifier::Vertical_slider_modifier& getVertical_slider() const;
 
 		Scroll_area(const Scroll_area&) = delete;
 		Scroll_area& operator=(const Scroll_area&) = delete;
 
-		void resize(sf::Vector2f size);
+		void resize(bool size_changed = false);
 
 		~Scroll_area();
 
@@ -88,6 +91,7 @@ namespace gui
 		sf::RectangleShape _rectangle;
 		sf::Rect<float> _scroll_area_rect;
 		sf::Color _clear_color;
+		Mouse_info _mouse_info;
 
 		bool _need_resize, _v_slider_use = true, _h_slider_use = true;
 		float _step = 10;

@@ -503,9 +503,19 @@ gui::modifier::Frame_modifier & gui::Number_input::getFrame()
 	return _frame;
 }
 
+const gui::modifier::Frame_modifier & gui::Number_input::getFrame() const
+{
+	return _frame;
+}
+
 gui::modifier::Label_modifier & gui::Number_input::getLabel()
 {
 	_need_resize = true;
+	return _label;
+}
+
+const gui::modifier::Label_modifier & gui::Number_input::getLabel() const
+{
 	return _label;
 }
 
@@ -515,7 +525,17 @@ gui::modifier::Background_modifier & gui::Number_input::getBackground()
 	return _background;
 }
 
+const gui::modifier::Background_modifier & gui::Number_input::getBackground() const
+{
+	return _background;
+}
+
 gui::modifier::Function_modifier & gui::Number_input::getFunction()
+{
+	return _function;
+}
+
+const gui::modifier::Function_modifier & gui::Number_input::getFunction() const
 {
 	return _function;
 }

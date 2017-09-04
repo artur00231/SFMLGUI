@@ -32,21 +32,30 @@ namespace gui
 
 			virtual long long getValue() const = 0;
 			virtual std::pair<long long, long long> getMinMax() const = 0;
-			virtual long long getMax() const = 0;
+			virtual long long getMaxSteps() const = 0;
+			virtual float getMinButtonSize() const = 0;
 
 
 			virtual modifier::Frame_modifier& getFrame() = 0;
+			virtual const modifier::Frame_modifier& getFrame() const = 0;
 			virtual modifier::Background_modifier& getBackground() = 0;
+			virtual const modifier::Background_modifier& getBackground() const = 0;
 			virtual modifier::Function_modifier& getFunction() = 0;
+			virtual const modifier::Function_modifier& getFunction() const = 0;
 
 			virtual modifier::Button_modifier& getUp() = 0;
+			virtual const modifier::Button_modifier& getUp() const = 0;
 			virtual modifier::Button_modifier& getDown() = 0;
+			virtual const modifier::Button_modifier& getDown() const = 0;
 			virtual modifier::Button_modifier& getMiddle() = 0;
-
-			Vertical_slider_modifier(const Vertical_slider_modifier&) = delete;
-			Vertical_slider_modifier& operator=(const Vertical_slider_modifier&) = delete;
+			virtual const modifier::Button_modifier& getMiddle() const = 0;
 
 			virtual ~Vertical_slider_modifier() {};
+
+		protected:
+			// Vertical_slider_modifier can not by copied
+			Vertical_slider_modifier(const Vertical_slider_modifier&) = default;
+			Vertical_slider_modifier& operator=(const Vertical_slider_modifier&) = default;
 		};
 	}
 
@@ -89,17 +98,24 @@ namespace gui
 
 		long long getValue() const override;
 		std::pair<long long, long long> getMinMax() const override;
-		long long getMax() const override;
+		long long getMaxSteps() const override;
+		float getMinButtonSize() const override;
 
 		void resize() override;
 
 		modifier::Frame_modifier& getFrame() override;
+		const modifier::Frame_modifier& getFrame() const override;
 		modifier::Background_modifier& getBackground() override;
+		const modifier::Background_modifier& getBackground() const override;
 		modifier::Function_modifier& getFunction() override;
+		const modifier::Function_modifier& getFunction() const override;
 
 		modifier::Button_modifier& getUp() override;
+		const modifier::Button_modifier& getUp() const override;
 		modifier::Button_modifier& getDown() override;
+		const modifier::Button_modifier& getDown() const override;
 		modifier::Button_modifier& getMiddle() override;
+		const modifier::Button_modifier& getMiddle() const override;
 
 		~Vertical_slider() {};
 
