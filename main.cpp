@@ -38,20 +38,9 @@ int main()
 
 	gui::Gui gui(s);
 
-	auto combo_box = gui.add(new gui::Combo_box{});
-	combo_box->setPosition({ 200, 0 });
-	combo_box->setSize({ 120, 60});
-
-	std::vector<sf::String> a{ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
-	combo_box->setOptions(a);
-
-	combo_box->getBackground().setColor(sf::Color::Green);
-	combo_box->getFrame().setThickness(2);
-	combo_box->getFrame().setColor(sf::Color::Black);
-
-	combo_box->getOption().getFrame().setThickness(1);
-	combo_box->getOption().getFrame().setColor(sf::Color::Black);
-
+	auto label = gui.add(new gui::Label{"weird\nco nie?"});
+	label->setPosition({ 0, 0 });
+	label->setSize({ 100, 100 });
 
 	while (window.isOpen())
 	{

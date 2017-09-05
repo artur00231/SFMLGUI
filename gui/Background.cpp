@@ -6,6 +6,27 @@ gui::Background::Background()
 	_rectangle.setFillColor(sf::Color::Transparent);
 }
 
+gui::Background::Background(const Background & background) : _background_type{ background._background_type }, _rectangle{ background._rectangle }
+{
+	if (background._image)
+	{
+		_image.reset(new gui::Image{ *background._image });
+	}
+}
+
+gui::Background & gui::Background::operator=(const Background & background)
+{
+	_background_type = background._background_type;
+	_rectangle = background._rectangle;
+
+	if (background._image)
+	{
+		_image.reset(new gui::Image{ *background._image });
+	}
+
+	return *this;
+}
+
 void gui::Background::setSize(const sf::Vector2f & size)
 {
 	_rectangle.setSize(size);

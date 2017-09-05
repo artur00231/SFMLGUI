@@ -13,6 +13,7 @@ namespace gui
 	{
 	public:
 		virtual void operator()(const Mouse_info&, gui::duration&, active_gui_object*) = 0;
+		virtual function* clone() = 0;
 	};
 
 	namespace modifier
@@ -47,8 +48,8 @@ namespace gui
 	public:
 		Function() {};
 
-		Function(const Function&) = default;
-		Function& operator=(const Function&) = default;
+		Function(const Function&);
+		Function& operator=(const Function&);
 		Function(Function&&) = default;
 		Function& operator=(Function&&) = default;
 
@@ -64,7 +65,7 @@ namespace gui
 		~Function() {};
 
 	private:
-		std::shared_ptr<function> _function_1;
+		std::unique_ptr<function> _function_1;
 		std::function<void(const Mouse_info&, gui::duration&, active_gui_object*)> _function_2;
 		std::function<void(active_gui_object*)> _function_3;
 		std::function<void()> _function_4;
