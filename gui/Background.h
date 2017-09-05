@@ -43,8 +43,8 @@ namespace gui
 	public:
 		Background();
 
-		Background(const Background&) = default;
-		Background& operator=(const Background&) = default;
+		Background(const Background&);
+		Background& operator=(const Background&);
 		Background(Background&&) = default;
 		Background& operator=(Background&&) = default;
 
@@ -75,7 +75,7 @@ namespace gui
 
 	private:
 		Background_type _background_type = Background_type::COLOR;
-		std::shared_ptr<Image> _image;
+		std::unique_ptr<Image> _image;
 		sf::RectangleShape _rectangle;
 
 	};

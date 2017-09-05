@@ -1,5 +1,27 @@
 #include "Function.h"
 
+gui::Function::Function(const Function & functon) : _function_2{ functon._function_2 }, _function_3{ functon._function_3 }, _function_4{ functon._function_4 }
+{
+	if (functon._function_1)
+	{
+		_function_1.reset(functon._function_1->clone());
+	}
+}
+
+gui::Function & gui::Function::operator=(const Function & functon)
+{
+	_function_2 = functon._function_2;
+	_function_3 = functon._function_3;
+	_function_4 = functon._function_4;
+
+	if (functon._function_1)
+	{
+		_function_1.reset(functon._function_1->clone());
+	}
+
+	return *this;
+}
+
 void gui::Function::set(gui::function * function)
 {
 	_function_1.reset(function);
