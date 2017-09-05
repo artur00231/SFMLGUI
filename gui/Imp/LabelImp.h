@@ -21,7 +21,6 @@ namespace gui {
 			void setSize(const sf::Vector2f & size);
 			void setPosition(const sf::Vector2f & position);
 			void setCharacterColor(const sf::Color & color);
-			bool setFont(const std::string & path);
 			void setFont(const sf::Font & font);
 			void setCharacterSize(unsigned int size);
 			void setString(const sf::String & text);
@@ -48,7 +47,7 @@ namespace gui {
 
 
 		private:
-			sf::Font _font;
+			const sf::Font * _font;
 			sf::Text _text;
 			sf::RectangleShape _rectangle;
 			Text_status _text_status = Text_status::OK;
@@ -59,7 +58,7 @@ namespace gui {
 
 		inline LabelImp::LabelImp(const sf::String & text, const Text_style * text_style)
 		{
-			_text.setFont(_font);
+			_text.setFont(*_font);
 			_text.setString(text);
 
 			if (text_style)
@@ -89,24 +88,11 @@ namespace gui {
 			_text.setFillColor(color);
 		}
 
-		inline bool LabelImp::setFont(const std::string & path)
-		{
-			bool loaded_correctly = false;
-
-			if (path != "")
-			{
-				loaded_correctly = _font.loadFromFile(path);
-			}
-
-			// Resize text
-			resize();
-
-			return loaded_correctly;
-		}
-
 		inline void LabelImp::setFont(const sf::Font & font)
 		{
-			_font = font;
+			_font = &font;
+
+			_text.setFont(font);
 
 			// Resize text
 			resize();
@@ -138,10 +124,7 @@ namespace gui {
 
 		inline void LabelImp::setTextStyle(const Text_style & text_style)
 		{
-			if (text_style._font_patch != "")
-			{
-				_font.loadFromFile(text_style._font_patch);
-			}
+			setFont(text_style._font);
 			_text.setCharacterSize(text_style._character_size);
 			_text.setFillColor(text_style._color);
 			_text.setStyle(text_style._style);
@@ -180,7 +163,7 @@ namespace gui {
 
 		inline const sf::Font & LabelImp::getFont() const
 		{
-			return _font;
+			return *_font;
 		}
 
 		inline unsigned int LabelImp::getCharacterSize() const

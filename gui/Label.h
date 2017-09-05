@@ -18,7 +18,6 @@ namespace gui {
 			Label_modifier& operator=(Label_modifier&&) = default;
 
 			virtual void setColor(const sf::Color & color) = 0;
-			virtual bool setFont(const std::string & path) = 0;
 			virtual void setFont(const sf::Font & font) = 0;
 			virtual void setCharacterSize(unsigned int size) = 0;
 			virtual void setString(const sf::String & text) = 0;
@@ -68,7 +67,6 @@ namespace gui {
 		void setOwner(owner & owner) override;
 		void removeFromOwner(owner & owner) override;
 
-		bool setFont(const std::string & path) override;
 		void setFont(const sf::Font & font) override;
 		void setCharacterSize(unsigned int size) override;
 		void setString(const sf::String & text) override;
