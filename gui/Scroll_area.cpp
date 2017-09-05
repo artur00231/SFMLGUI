@@ -1,6 +1,6 @@
 #include "Scroll_area.h"
 
-gui::Scroll_area::Scroll_area(const Text_style * text_style) : _h_slider_use{ false }, _v_slider_use{ false }
+gui::Scroll_area::Scroll_area(const Text_style * text_style) : _h_slider_use{ false }, _v_slider_use{ false }, _default_text_style{ _default_font }
 {
 	if (text_style)
 	{
@@ -625,3 +625,5 @@ gui::gui_object * gui::Scroll_area::addToMap(gui::gui_object & object, const std
 
 	return &object;
 }
+
+sf::Font gui::Scroll_area::_default_font;

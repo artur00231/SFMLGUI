@@ -34,13 +34,21 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(width, heigth), "Ui design normal", sf::Style::Close, window_settings);
 	window.setFramerateLimit(120);
 
-	gui::Text_style s{ "fonts\\arial.ttf", 20, sf::Color::Black };
+	gui::Font_manager fonts;
+	fonts.add("fonts\\arial.ttf", "Arial");
 
-	gui::Gui gui(s);
+	gui::Gui gui(gui::Text_style{ fonts["Arial"], 20, sf::Color::Black });
 
-	auto label = gui.add(new gui::Label{"weird\nco nie?"});
-	label->setPosition({ 0, 0 });
-	label->setSize({ 100, 100 });
+	auto combo = gui.add(new gui::Combo_box);
+
+	combo->setPosition({ 0, 0 });
+	combo->setSize({ 120, 50 });
+
+	combo->addOption("1");
+	combo->addOption("2");
+	combo->addOption("3");
+	combo->addOption("1453");
+	combo->addOption("8767861");
 
 	while (window.isOpen())
 	{

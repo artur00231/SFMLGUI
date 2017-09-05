@@ -98,6 +98,8 @@ namespace gui
 
 		long long _v_slider_value, _h_slider_value;
 
+		static sf::Font _default_font;
+
 		owner * _owner;
 	};
 

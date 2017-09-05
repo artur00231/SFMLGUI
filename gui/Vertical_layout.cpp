@@ -1,6 +1,6 @@
 #include "Vertical_layout.h"
 
-gui::Vertical_layout::Vertical_layout(const Text_style * text_style)
+gui::Vertical_layout::Vertical_layout(const Text_style * text_style) : _default_text_style{ _default_font }
 {
 	if (text_style)
 	{
@@ -321,3 +321,5 @@ gui::gui_object * gui::Vertical_layout::addToMap(gui::gui_object & object, const
 
 	return &object;
 }
+
+sf::Font gui::Vertical_layout::_default_font;

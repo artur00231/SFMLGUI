@@ -70,6 +70,8 @@ namespace gui
 		Mouse_info _mouse_info;
 		std::vector <gui_object*> _ordered_objects;
 
+		static sf::Font _default_font;
+
 		owner * _owner;
 	};
 

@@ -1,8 +1,7 @@
 #include "Gui.h"
 
-gui::Gui::Gui(const Text_style & text_style)
+gui::Gui::Gui(const Text_style & text_style) : _default_text_style{ text_style }
 {
-	_default_text_style = text_style;
 	_mouse_info_pointer = &_event.getMouseInfo();
 
 	// Start the timer

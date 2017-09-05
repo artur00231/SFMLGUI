@@ -20,6 +20,7 @@
 #include "Vertical_slider.h"
 #include "Scroll_area.h"
 #include "Combo_box.h"
+#include "Font_manager.h"
 
 #include <unordered_map>
 #include <chrono>

@@ -54,11 +54,6 @@ void gui::Label::removeFromOwner(owner & owner)
 	// Do nothing
 }
 
-bool gui::Label::setFont(const std::string & font_path)
-{
-	return LabelImp::setFont(font_path);
-}
-
 void gui::Label::setFont(const sf::Font & font)
 {
 	LabelImp::setFont(font);
