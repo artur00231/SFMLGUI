@@ -1,7 +1,7 @@
 #ifndef GUI_COMBO_BOX_h
 #define GUI_COMBO_BOX_h
 
-#include "active_gui_object.h"
+#include "changing_size_gui_object.h"
 #include "Frame.h"
 #include "Label.h"
 #include "Background.h"
@@ -17,7 +17,7 @@
 namespace gui
 {
 
-	class Combo_box : public gui::active_gui_object
+	class Combo_box : public gui::changing_size_gui_object
 	{
 	public:
 		explicit Combo_box();
@@ -47,6 +47,7 @@ namespace gui
 		bool isHoverChange() const override;
 		bool isClickedChange() const override;
 		bool isNeedResize() const override;
+		bool isExtended() const override;
 
 		void setActive(bool active) override;
 		void setFocus(bool focus) override;
@@ -61,6 +62,7 @@ namespace gui
 		sf::String getActiveOption() const;
 
 		void resize() override;
+		void extend(bool extend) override;
 
 
 		modifier::Frame_modifier& getFrame();
