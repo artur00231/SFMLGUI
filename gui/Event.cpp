@@ -1,5 +1,9 @@
 #include "Event.h"
 
+gui::Event::Event() : _focused_object{ nullptr }
+{
+}
+
 void gui::Event::add(const sf::Event & event)
 {
 	if (event.type == sf::Event::MouseButtonPressed)

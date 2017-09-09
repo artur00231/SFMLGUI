@@ -123,6 +123,11 @@ bool gui::Combo_box::isNeedResize() const
 	return _need_resize;
 }
 
+bool gui::Combo_box::isExtended() const
+{
+	return _showed_area;
+}
+
 void gui::Combo_box::setActive(bool active)
 {
 	_active = active;
@@ -256,6 +261,11 @@ void gui::Combo_box::resize()
 	
 
 	setPosition(_position);
+}
+
+void gui::Combo_box::extend(bool extend)
+{
+	showArea(extend);
 }
 
 gui::modifier::Frame_modifier & gui::Combo_box::getFrame()
@@ -414,20 +424,21 @@ void gui::Combo_box::changeButtonsPattern()
 
 void gui::Combo_box::showArea(bool show)
 {
-	_showed_area = show;
-
-
-	if (_owner)
+	if (_showed_area != show)
 	{
-		if (show)
+		_showed_area = show;
+		if (_owner)
 		{
-			_owner->addObject(_area);
-		}
-		else
-		{
-			_owner->remove(&_area);
-		}
+			if (show)
+			{
+				_owner->addObject(_area);
+			}
+			else
+			{
+				_owner->remove(&_area);
+			}
 
-		setPosition(_position);
+			setPosition(_position);
+		}
 	}
 }
