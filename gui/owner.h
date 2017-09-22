@@ -22,6 +22,7 @@ namespace gui
 
 		virtual void getEvents(gui::active_gui_object & object, const sf::Window & window) = 0;
 		virtual void getEvents(gui::active_gui_object & object, const sf::Window & window, const sf::Rect<float>& rect) = 0;
+		virtual void eventRemoveFocusedObject(gui_object * object) = 0;
 		virtual const Mouse_info& getMouseInfo() const = 0;
 
 		virtual const Text_style& getTextStyle() const = 0;

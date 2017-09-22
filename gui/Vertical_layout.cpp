@@ -60,6 +60,11 @@ void gui::Vertical_layout::setOwner(owner & owner)
 
 void gui::Vertical_layout::removeFromOwner(owner & owner)
 {
+	for (auto x : _gui_objects)
+	{
+		_owner->eventRemoveFocusedObject(x.second.first);
+	}
+
 	_owner = nullptr;
 }
 
@@ -86,6 +91,8 @@ void gui::Vertical_layout::remove(const std::string & name)
 	if (_gui_objects.count(name) > 0)
 	{
 		auto to_erase = _gui_objects[name];
+
+		eventRemoveFocusedObject(to_erase.first);
 
 		to_erase.first->removeFromOwner(*this);
 
@@ -122,6 +129,8 @@ void gui::Vertical_layout::remove(const gui::gui_object * object)
 
 	if (poz != _gui_objects.end())
 	{
+		eventRemoveFocusedObject(poz->second.first);
+
 		poz->second.first->removeFromOwner(*this);
 
 		if (poz->second.second.first)
@@ -155,6 +164,14 @@ void gui::Vertical_layout::getEvents(active_gui_object & object, const sf::Windo
 	if (_owner)
 	{
 		_owner->getEvents(object, window, rect);
+	}
+}
+
+void gui::Vertical_layout::eventRemoveFocusedObject(gui_object * object)
+{
+	if (_owner)
+	{
+		_owner->eventRemoveFocusedObject(object);
 	}
 }
 

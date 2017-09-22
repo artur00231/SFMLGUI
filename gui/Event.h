@@ -21,6 +21,7 @@ namespace gui
 		void getEvents(active_gui_object & object, const sf::Window & window);
 		void getEvents(active_gui_object & object, const sf::Window & window, const sf::Rect<float> & rect);
 		void checkFocusedObject();
+		void removeFocusedObject(gui_object * object);
 
 		Mouse_info& getMouseInfo();
 
