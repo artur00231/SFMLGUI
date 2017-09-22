@@ -33,16 +33,21 @@ gui::gui_object * gui::Gui::addObject(gui::gui_object & object, const std::strin
 
 void gui::Gui::remove(const std::string & name)
 {
-	auto to_erase = _gui_objects[name];
-
-	to_erase.first->removeFromOwner(*this);
-
-	if (to_erase.second)
+	if (_gui_objects.find(name) != _gui_objects.end())
 	{
-		delete to_erase.first;
-	}
+		auto to_erase = _gui_objects[name];
 
-	_gui_objects.erase(name);
+		_event.removeFocusedObject(to_erase.first);
+
+		to_erase.first->removeFromOwner(*this);
+
+		if (to_erase.second)
+		{
+			delete to_erase.first;
+		}
+
+		_gui_objects.erase(name);
+	}
 }
 
 void gui::Gui::remove(const gui::gui_object * object)
@@ -61,6 +66,8 @@ void gui::Gui::remove(const gui::gui_object * object)
 
 	if (poz != _gui_objects.end())
 	{
+		_event.removeFocusedObject(poz->second.first);
+
 		poz->second.first->removeFromOwner(*this);
 
 		if (poz->second.second)
@@ -80,6 +87,11 @@ void gui::Gui::getEvents(active_gui_object & object, const sf::Window & window)
 void gui::Gui::getEvents(active_gui_object & object, const sf::Window & window, const sf::Rect<float>& rect)
 {
 	_event.getEvents(object, window, rect);
+}
+
+void gui::Gui::eventRemoveFocusedObject(gui_object * object)
+{
+	_event.removeFocusedObject(object);
 }
 
 const gui::Mouse_info & gui::Gui::getMouseInfo() const

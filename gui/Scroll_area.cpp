@@ -87,6 +87,11 @@ void gui::Scroll_area::removeFromOwner(owner & owner)
 		owner.remove(&_h_slider);
 	}
 
+	for (auto x : _gui_objects)
+	{
+		_owner->eventRemoveFocusedObject(x.second.first);
+	}
+
 	_owner = nullptr;
 }
 
@@ -177,6 +182,14 @@ void gui::Scroll_area::getEvents(active_gui_object & object, const sf::Window & 
 		{
 			_owner->getEvents(object, window, real_global_bounds);
 		}
+	}
+}
+
+void gui::Scroll_area::eventRemoveFocusedObject(gui_object * object)
+{
+	if (_owner)
+	{
+		_owner->eventRemoveFocusedObject(object);
 	}
 }
 

@@ -157,6 +157,14 @@ void gui::Event::checkFocusedObject()
 	}
 }
 
+void gui::Event::removeFocusedObject(gui_object * object)
+{
+	if (_focused_object == object)
+	{
+		_focused_object = nullptr;
+	}
+}
+
 gui::Mouse_info & gui::Event::getMouseInfo()
 {
 	return _mouse_info;
