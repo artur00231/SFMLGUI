@@ -97,7 +97,7 @@ namespace gui
 		bool _need_resize, _v_slider_use = true, _h_slider_use = true;
 		float _step = 10;
 
-		long long _v_slider_value, _h_slider_value;
+		long long _v_slider_value{}, _h_slider_value{};
 
 		static sf::Font _default_font;
 

@@ -135,12 +135,12 @@ namespace gui
 		Background _background;
 		sf::Vector2f _size, _position;
 		Function _function;
-		bool _hover, _clicked, _active = true, _focus, _hover_change, _clicked_change, _need_resize, _password;
+		bool _hover{}, _clicked{}, _active = true, _focus{}, _hover_change{}, _clicked_change{}, _need_resize{}, _password{};
 
 		sf::String _text;
-		std::size_t _text_pointer_position;
+		std::size_t _text_pointer_position = 0;
 		long long _time_elapsed, _text_pointer_time = 500000;
-		bool _show_text_pointer;
+		bool _show_text_pointer{};
 		std::pair<wchar_t, wchar_t> _text_pointer_characters{ L'\u2008', '|' };
 		wchar_t _password_character = L'*';
 	};

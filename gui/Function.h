@@ -66,9 +66,9 @@ namespace gui
 
 	private:
 		std::unique_ptr<function> _function_1;
-		std::function<void(const Mouse_info&, gui::duration&, active_gui_object*)> _function_2;
-		std::function<void(active_gui_object*)> _function_3;
-		std::function<void()> _function_4;
+		std::function<void(const Mouse_info&, gui::duration&, active_gui_object*)> _function_2{};
+		std::function<void(active_gui_object*)> _function_3{};
+		std::function<void()> _function_4{};
 	};
 }
 

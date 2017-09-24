@@ -104,12 +104,12 @@ namespace gui
 		std::vector<Button*> _buttons;
 		sf::Vector2f _size, _position;
 		Function _function;
-		bool _hover, _clicked, _active = true, _focus, _hover_change, _clicked_change, _need_resize, _showed_area, _need_buttons_change;
+		bool _hover{}, _clicked{}, _active = true, _focus{}, _hover_change{}, _clicked_change{}, _need_resize{}, _showed_area{}, _need_buttons_change{};
 		unsigned int _min_options_in_area = 4;
 
 		const float _slider_min_size = 20;
 
-		owner * _owner;
+		owner * _owner{};
 
 	};
 

@@ -47,7 +47,7 @@ namespace gui {
 
 
 		private:
-			const sf::Font * _font;
+			const sf::Font * _font{};
 			sf::Text _text;
 			sf::RectangleShape _rectangle;
 			Text_status _text_status = Text_status::OK;

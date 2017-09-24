@@ -76,7 +76,7 @@ namespace gui
 	private:
 		Background_type _background_type = Background_type::COLOR;
 		std::unique_ptr<Image> _image;
-		sf::RectangleShape _rectangle;
+		sf::RectangleShape _rectangle{};
 
 	};
 
