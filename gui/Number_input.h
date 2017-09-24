@@ -175,17 +175,17 @@ namespace gui
 		Button _up, _down;
 		sf::Vector2f _size, _position;
 		Function _function;
-		bool _hover, _clicked, _active = true, _focus, _hover_change, _clicked_change, _need_resize;
+		bool _hover{}, _clicked{}, _active = true, _focus{}, _hover_change{}, _clicked_change{}, _need_resize{};
 
 		mutable sf::String _text = "0";
 		std::size_t _text_pointer_position = 1;
 		long long _time_elapsed, _text_pointer_time = 500000;
-		bool _show_text_pointer;
+		bool _show_text_pointer{};
 		std::pair<wchar_t, wchar_t> _text_pointer_characters{ L'\u2008', '|' };
 		float _proportions_text_button = 0.2f;
 		Number_input_type _number_input_type = Number_input_type::REAL;
-		double_value _max, _min, _step;
-		mutable double_value _value;
+		double_value _max{}, _min{}, _step{ 1 };
+		mutable double_value _value{};
 
 	};
 

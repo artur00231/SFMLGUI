@@ -143,9 +143,9 @@ namespace gui
 		Image _checked_mark, _checked_outline;
 		sf::Vector2f _size, _position;
 		Function _function;
-		bool _hover, _clicked, _active = true, _focus, _hover_change, _clicked_change, _need_resize, _exclusive;
+		bool _hover{}, _clicked{}, _active = true, _focus{}, _hover_change{}, _clicked_change{}, _need_resize{}, _exclusive{};
 		float _proportions_text_checked_frame = 1.2f, _proportions_checked_filed = 0.2f;
-		Radio_button_state _radio_button_state;
+		Radio_button_state _radio_button_state{};
 
 		static sf::Texture _checked_mark_texture;
 		static sf::Texture _checked_outline_texture;

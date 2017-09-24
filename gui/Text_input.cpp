@@ -334,19 +334,25 @@ void gui::Text_input::setClickedChange(bool clicked_change)
 
 void gui::Text_input::hideTextPointer()
 {
-	_text.erase(_text_pointer_position);
+	if (isFocused())
+	{
+		_text.erase(_text_pointer_position);
+	}
 }
 
 void gui::Text_input::showTextPointer()
 {
-	if (_show_text_pointer)
+	if (isFocused())
 	{
-		_text.insert(_text_pointer_position, _text_pointer_characters.second);
-	}
-	else
-	{
-		_text.insert(_text_pointer_position, _text_pointer_characters.first);
+		if (_show_text_pointer)
+		{
+			_text.insert(_text_pointer_position, _text_pointer_characters.second);
+		}
+		else
+		{
+			_text.insert(_text_pointer_position, _text_pointer_characters.first);
 
+		}
 	}
 }
 

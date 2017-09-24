@@ -31,7 +31,7 @@ namespace gui
 
 	private:
 		sf::String _input_text;
-		active_gui_object * _focused_object;
+		active_gui_object * _focused_object{};
 		std::deque<sf::Keyboard::Key> _special_keys;
 
 		Mouse_info _mouse_info;

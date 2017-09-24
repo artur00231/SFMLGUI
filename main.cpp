@@ -19,7 +19,7 @@ int main()
 	std::unique_ptr<gui::Gui> gui;
 	gui.reset(new gui::Gui(style));
 
-	gui::Checkbox * text = gui->add( new gui::Checkbox{":)"});
+	auto * text = gui->add( new gui::Text_input{":)"});
 	text->setPosition({ 0, 100 });
 	text->setSize({ 200, 50 });
 

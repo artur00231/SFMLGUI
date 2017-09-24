@@ -138,14 +138,14 @@ namespace gui
 		Frame _frame;
 		Function _function;
 		sf::Vector2f _size, _position;
-		bool _hover, _clicked, _active = true, _focus, _hover_change, _clicked_change, _need_resize;
+		bool _hover{}, _clicked{}, _active = true, _focus{}, _hover_change{}, _clicked_change{}, _need_resize{};
 
-		long long _max, _min, _step, _value;
+		long long _max{}, _min{}, _step{ 1 }, _value{};
 		sf::Vector2f _button_min_size{20, 20};
 		sf::Vector2f _middle_button_min_size{ 5, 20 };
 
 		sf::Vector2f _mouse_move;
-		bool _follow_mouse;
+		bool _follow_mouse{};
 	};
 
 

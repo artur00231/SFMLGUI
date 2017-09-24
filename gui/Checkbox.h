@@ -144,7 +144,7 @@ namespace gui
 		Image _checked_mark;
 		sf::Vector2f _size, _position;
 		Function _function;
-		bool _hover, _clicked, _active = true, _focus, _hover_change, _clicked_change, _need_resize;
+		bool _hover{}, _clicked{}, _active = true, _focus{}, _hover_change{}, _clicked_change{}, _need_resize{};
 		float _proportion_text_checked_frame = 1.2f, _proportion_checked_filed = 0.2f;
 		bool _three_state = false;
 		Checkbox_state _checkbox_state;

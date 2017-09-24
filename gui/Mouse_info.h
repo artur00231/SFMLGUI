@@ -21,13 +21,13 @@ namespace gui
 		const sf::Vector2f& getMouseMove() const;
 
 	private:
-		sf::Vector2f _mouse_position;
-		sf::Vector2f _mouse_move;
+		sf::Vector2f _mouse_position{ 0, 0 };
+		sf::Vector2f _mouse_move{ 0, 0 };
 
-		float _mouse_wheel_delta;
+		float _mouse_wheel_delta{ 0 };
 
-		bool _mouse_buttons_state[sf::Mouse::Button::ButtonCount];
-		bool _mouse_buttons_state_change[sf::Mouse::Button::ButtonCount];
+		bool _mouse_buttons_state[sf::Mouse::Button::ButtonCount]{0};
+		bool _mouse_buttons_state_change[sf::Mouse::Button::ButtonCount]{0};
 	};
 
 }
