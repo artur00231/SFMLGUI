@@ -40,7 +40,7 @@ namespace gui
 			virtual void clear() = 0;
 			virtual void setPassword(bool password) = 0;
 
-			virtual const sf::String& getString() const = 0;
+			virtual sf::String getString() const = 0;
 
 			virtual modifier::Frame_modifier& getFrame() = 0;
 			virtual const modifier::Frame_modifier& getFrame() const = 0;
@@ -103,7 +103,7 @@ namespace gui
 		void clear() override;
 		void setPassword(bool password) override;
 
-		const sf::String& getString() const override;
+		sf::String getString() const override;
 
 		void resize();
 

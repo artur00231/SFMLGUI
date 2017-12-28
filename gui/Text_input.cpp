@@ -127,7 +127,6 @@ void gui::Text_input::setActive(bool active)
 
 void gui::Text_input::setFocus(bool focus)
 {
-	_focus = focus;
 	if (focus)
 	{
 		_time_elapsed = _text_pointer_time + 1;
@@ -138,6 +137,8 @@ void gui::Text_input::setFocus(bool focus)
 	{
 		hideTextPointer();
 	}
+
+	_focus = focus;
 }
 
 void gui::Text_input::addText(const sf::String & text)
@@ -238,9 +239,17 @@ void gui::Text_input::setPassword(bool password)
 	resize();
 }
 
-const sf::String& gui::Text_input::getString() const
+sf::String gui::Text_input::getString() const
 {
-	return _text;
+	auto x = _text;
+
+	if (isFocused())
+	{
+		x.erase(_text_pointer_position);
+	}
+
+	return x;
+
 }
 
 void gui::Text_input::resize()
