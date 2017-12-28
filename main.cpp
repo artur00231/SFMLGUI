@@ -23,6 +23,14 @@ int main()
 	text->setPosition({ 0, 100 });
 	text->setSize({ 200, 50 });
 
+	text = gui->add(new gui::Text_input{ ":)" });
+	text->setPosition({ 300, 100 });
+	text->setSize({ 200, 50 });
+	
+	
+	auto x = text->getString().toAnsiString();
+	std::cout << x;
+
 	while (window.isOpen())
 	{
 		
