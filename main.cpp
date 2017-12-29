@@ -19,17 +19,13 @@ int main()
 	std::unique_ptr<gui::Gui> gui;
 	gui.reset(new gui::Gui(style));
 
-	auto * text = gui->add( new gui::Text_input{":)"});
-	text->setPosition({ 0, 100 });
-	text->setSize({ 200, 50 });
-
-	text = gui->add(new gui::Text_input{ ":)" });
-	text->setPosition({ 300, 100 });
-	text->setSize({ 200, 50 });
+	auto select = gui->add(new gui::Combo_box{}, "sm5_combo");
+	select->setPosition({ 40, 330 });
+	select->setSize({ 300, 30 });
+	select->addOption("Polski");
+	select->addOption("English");
 	
 	
-	auto x = text->getString().toAnsiString();
-	std::cout << x;
 
 	while (window.isOpen())
 	{

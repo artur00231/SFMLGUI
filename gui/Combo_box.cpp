@@ -80,12 +80,12 @@ void gui::Combo_box::setOwner(gui::owner & owner)
 
 void gui::Combo_box::removeFromOwner(owner & owner)
 {
+	showArea(false);
+
 	_owner = nullptr;
 
 	owner.remove(&_button);
 	owner.remove(&_down);
-
-	showArea(false);
 }
 
 bool gui::Combo_box::isActive() const

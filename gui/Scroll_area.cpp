@@ -1,6 +1,6 @@
 #include "Scroll_area.h"
 
-gui::Scroll_area::Scroll_area(const Text_style * text_style) : _h_slider_use{ false }, _v_slider_use{ false }, _default_text_style{ _default_font }
+gui::Scroll_area::Scroll_area(const Text_style * text_style) : _h_slider_use{ false }, _v_slider_use{ false }, _default_text_style{ _default_font }, _owner{ nullptr }
 {
 	if (text_style)
 	{
