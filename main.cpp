@@ -10,7 +10,7 @@ int main()
 	window_settings.antialiasingLevel = 0;
 
 	sf::RenderWindow window(sf::VideoMode(width, heigth), "Ui design normal", sf::Style::Close, window_settings);
-	window.setFramerateLimit(120);
+	window.setFramerateLimit(10);
 
 	gui::Font_manager fonts;
 	fonts.add("fonts\\arial.ttf", "Arial");
@@ -22,8 +22,18 @@ int main()
 	auto select = gui->add(new gui::Combo_box{}, "sm5_combo");
 	select->setPosition({ 40, 330 });
 	select->setSize({ 300, 30 });
-	select->addOption("Polski");
-	select->addOption("English");
+	select->addOption("10");
+	select->addOption("9");
+	select->addOption("8");
+	select->addOption("7");
+	select->addOption("6");
+	select->addOption("5");
+	select->addOption("4");
+	select->addOption("3");
+	select->addOption("2");
+	select->addOption("1");
+
+
 	
 	
 
@@ -48,6 +58,13 @@ int main()
 		window.clear(sf::Color::Color(200, 200, 200));
 		gui->drawAndUp_date(window);
 		window.display();
+
+		std::cout << select->getActiveOption().toAnsiString() << " " << select->getActiveOptionIndex() << std::endl;
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tilde))
+		{
+			select->setActiveOptionByIndex(4);
+		}
 		
 	}
 
