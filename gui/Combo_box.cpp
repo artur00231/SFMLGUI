@@ -145,6 +145,21 @@ void gui::Combo_box::setMinOptionsInArea(unsigned int min)
 
 void gui::Combo_box::addOption(const sf::String & name)
 {
+	bool unque_name = true;
+
+	for (auto && x : _buttons)
+	{
+		if (x->getLabel().getString() == name)
+		{
+			unque_name = false;
+		}
+	}
+
+	if (!unque_name)
+	{
+		return;
+	}
+
 	auto new_button = _layout.add(new Button{ name });
 	new_button->getFunction().set([this](gui::gui_object * object) {this->buttonsFunction(object); });
 
@@ -195,6 +210,34 @@ void gui::Combo_box::clearOptions()
 	_buttons.clear();
 }
 
+bool gui::Combo_box::setActiveOption(const sf::String & name)
+{
+	bool find = false;
+
+	auto pos = std::find_if(_buttons.begin(), _buttons.end(), [&name](const gui::Button* button) {return button->getLabel().getString() == name; });
+
+	if (pos == _buttons.end())
+	{
+		return false;
+	}
+
+	_button.getLabel().setString(name);
+
+	return true;
+}
+
+bool gui::Combo_box::setActiveOptionByIndex(std::size_t index)
+{
+	if (index >= _buttons.size())
+	{
+		return false;
+	}
+
+	_button.getLabel().setString(_buttons.at(index)->getLabel().getString());
+
+	return true;
+}
+
 unsigned int gui::Combo_box::getMinOptionsInArea() const
 {
 	return _min_options_in_area;
@@ -203,6 +246,14 @@ unsigned int gui::Combo_box::getMinOptionsInArea() const
 sf::String gui::Combo_box::getActiveOption() const
 {
 	return _button.getLabel().getString();
+}
+
+std::size_t gui::Combo_box::getActiveOptionIndex() const
+{
+	auto name = _button.getLabel().getString();
+	auto pos = std::find_if(_buttons.begin(), _buttons.end(), [&name](const gui::Button* button) {return button->getLabel().getString() == name; });
+
+	return (pos == _buttons.end() ? 0 : pos - _buttons.begin());
 }
 
 void gui::Combo_box::resize()

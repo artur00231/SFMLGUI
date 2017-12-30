@@ -57,9 +57,12 @@ namespace gui
 		void setOptions(const std::vector<sf::String> & names);
 		void removeOption(const sf::String & name);
 		void clearOptions();
+		bool setActiveOption(const sf::String & name);
+		bool setActiveOptionByIndex(std::size_t index);
 
 		unsigned int getMinOptionsInArea() const;
 		sf::String getActiveOption() const;
+		std::size_t getActiveOptionIndex() const;
 
 		void resize() override;
 		void extend(bool extend) override;
